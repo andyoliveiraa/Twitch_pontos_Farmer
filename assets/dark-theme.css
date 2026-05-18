@@ -1,39 +1,206 @@
-body, .dropdown *, .input {
-    background: #343E59;
-    color: #fff;
+/* Premium Twitch-Inspired Dark Purple Theme */
+:root {
+    --bg-main: #09090E;
+    --bg-card: #14141C;
+    --bg-input: #1D1E2C;
+    --text-primary: #FFFFFF;
+    --text-secondary: #ADADB8;
+    --twitch-purple: #9146FF;
+    --twitch-purple-glow: rgba(145, 70, 255, 0.25);
+    --twitch-purple-hover: #A262FF;
+    --border-color: #26273B;
+    --font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
 }
+
+body {
+    background-color: var(--bg-main) !important;
+    color: var(--text-primary) !important;
+    font-family: var(--font-family) !important;
+}
+
+/* Links */
 a {
-    color: #fff;
+    color: var(--text-secondary);
+    transition: color 0.2s ease, text-shadow 0.2s ease;
 }
+
 a:hover {
-    color: #f9826c;
+    color: var(--twitch-purple-hover) !important;
+    text-shadow: 0 0 8px var(--twitch-purple-glow);
 }
+
+/* Bulma Containers & Columns */
+.container {
+    padding: 1.5rem;
+}
+
+/* Sleek modern Box design with box-shadow and purple glow */
 .box {
-    background-color: #2B2D3E;
+    background-color: var(--bg-card) !important;
+    border: 1px solid var(--border-color) !important;
+    border-radius: 12px !important;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5), 0 0 1px 1px var(--border-color) !important;
+    color: var(--text-primary) !important;
+    transition: box-shadow 0.3s ease, border-color 0.3s ease;
 }
+
+.box:hover {
+    border-color: var(--twitch-purple) !important;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.6), 0 0 15px var(--twitch-purple-glow) !important;
+}
+
+/* Dropdown styling */
+.dropdown-trigger .button {
+    background-color: var(--bg-card) !important;
+    border: 1px solid var(--border-color) !important;
+    color: var(--text-primary) !important;
+    border-radius: 8px !important;
+    transition: all 0.2s ease;
+}
+
+.dropdown-trigger .button:hover {
+    border-color: var(--twitch-purple) !important;
+    color: var(--twitch-purple-hover) !important;
+    box-shadow: 0 0 10px var(--twitch-purple-glow);
+}
+
+.dropdown-content {
+    background-color: var(--bg-card) !important;
+    border: 1px solid var(--border-color) !important;
+    border-radius: 8px !important;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5) !important;
+    overflow: hidden;
+}
+
+.dropdown-item {
+    color: var(--text-secondary) !important;
+    transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.dropdown-item:hover {
+    background-color: var(--twitch-purple) !important;
+    color: var(--text-primary) !important;
+}
+
+/* Inputs (date picker) */
+.input {
+    background-color: var(--bg-input) !important;
+    border: 1px solid var(--border-color) !important;
+    color: var(--text-primary) !important;
+    border-radius: 8px !important;
+    padding: 0.5em 0.75em !important;
+    transition: all 0.2s ease;
+}
+
+.input:focus, .input:active {
+    border-color: var(--twitch-purple) !important;
+    box-shadow: 0 0 10px var(--twitch-purple-glow) !important;
+    outline: none;
+}
+
+/* Checkboxes */
+.checkbox {
+    color: var(--text-secondary) !important;
+    transition: color 0.2s ease;
+    cursor: pointer;
+}
+
+.checkbox:hover {
+    color: var(--twitch-purple-hover) !important;
+}
+
+.checkbox input {
+    accent-color: var(--twitch-purple) !important;
+    margin-right: 5px;
+}
+
+/* Streamers Tabs (Vertical list) */
+.tabs {
+    border-right: none !important;
+}
+
+.tabs ul {
+    border-bottom: none !important;
+    padding: 0 !important;
+}
+
+.tabs li {
+    margin-bottom: 4px;
+    width: 100%;
+}
+
 .tabs a {
-    border-bottom-color: #dbdbdb;
-    color: #fff;
-    border-bottom-style: none;
+    border-bottom-style: none !important;
+    border-left: 3px solid transparent !important;
+    border-radius: 0 8px 8px 0 !important;
+    color: var(--text-secondary) !important;
+    padding: 0.75em 1.25em !important;
+    background-color: transparent !important;
+    text-align: left !important;
+    transition: all 0.2s ease !important;
+    display: block !important;
+    font-weight: 500;
 }
-.tabs li.is-active a {
-    border-bottom-color: #f9826c;
-    color: #fff;
-    border-bottom-style: solid;
-}
+
 .tabs a:hover {
-    border-bottom-color: #dbdbdb;
-    color: #dbdbdb;
-    border-bottom-style: solid;
+    color: var(--twitch-purple-hover) !important;
+    background-color: rgba(145, 70, 255, 0.08) !important;
+    border-left-color: rgba(145, 70, 255, 0.4) !important;
 }
-.tabs ul{
-    margin-bottom: 5px;
-    border-bottom-style: none;
+
+.tabs li.is-active a {
+    color: var(--text-primary) !important;
+    background-color: rgba(145, 70, 255, 0.15) !important;
+    border-left: 3px solid var(--twitch-purple) !important;
+    font-weight: bold;
+    box-shadow: inset 4px 0 12px rgba(145, 70, 255, 0.1);
 }
-.checkbox:hover{
-    color: #f9826c;
-}
+
+/* Log Box Styling */
 #log-content {
-    color: #fff;
-    background-color: #2B2D3E;
+    background-color: #060609 !important;
+    color: #F3F3F5 !important;
+    border: 1px solid var(--border-color) !important;
+    border-radius: 8px !important;
+    font-family: 'Fira Code', 'Courier New', Courier, monospace !important;
+    font-size: 0.9rem !important;
+    padding: 1rem !important;
+    box-shadow: inset 0 4px 12px rgba(0, 0, 0, 0.6) !important;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--bg-main);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--border-color);
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--twitch-purple);
+}
+
+/* Auto-update log button */
+#auto-update-log {
+    background-color: var(--bg-input) !important;
+    border: 1px solid var(--border-color) !important;
+    color: var(--text-primary) !important;
+    border-radius: 8px !important;
+    cursor: pointer;
+    font-size: 1rem !important;
+    padding: 0.3em 0.8em !important;
+    margin-right: 10px;
+    transition: all 0.2s ease;
+}
+
+#auto-update-log:hover {
+    border-color: var(--twitch-purple) !important;
+    box-shadow: 0 0 8px var(--twitch-purple-glow);
 }

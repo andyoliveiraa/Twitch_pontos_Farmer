@@ -192,7 +192,7 @@
         var darkMode = $('#dark-mode').prop("checked")
         $("link[href='{{url_for('static', filename='dark-theme.css')}}']").prop("disabled", !darkMode);
         chart.updateOptions({
-            colors: darkMode === true ? ["#f9826c"] : ['#008ffb'],
+            colors: darkMode === true ? ["#A262FF"] : ['#008ffb'],
             chart: {
                 foreColor: darkMode === true ? "#fff" : '#373d3f'
             },

@@ -26,7 +26,7 @@ var options = {
         text: 'Channel points (dates are displayed in UTC)',
         align: 'left'
     },
-    colors: ["#f9826c"],
+    colors: ["#A262FF"],
     fill: {
         type: 'gradient',
         gradient: {
