@@ -1,0 +1,13 @@
+# Discloud Ignore List
+.git/
+.github/
+.vscode/
+venv/
+env/
+__pycache__/
+*.pyc
+logs/
+cookies/
+screenshots/
+htmls/
+.env
