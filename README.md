@@ -1,12 +1,12 @@
 # Twitch Channel Points Miner - V3 (Premium Dashboard Edition) 🚀
 
 <p align="center">
-<a href="https://github.com/rdavydov/Twitch-Channel-Points-Miner-v2/releases"><img alt="Latest Version" src="https://img.shields.io/github/v/release/rdavydov/Twitch-Channel-Points-Miner-v2?style=flat&color=white&logo=github&logoColor=white"></a>
-<a href="https://github.com/rdavydov/Twitch-Channel-Points-Miner-v2/stargazers"><img alt="GitHub Repo stars" src="https://img.shields.io/github/stars/rdavydov/Twitch-Channel-Points-Miner-v2?style=flat&color=limegreen&logo=github&logoColor=white"></a>
+<a href="https://github.com/andyoliveiraa/Twitch_pontos_Farmer/releases"><img alt="Latest Version" src="https://img.shields.io/github/v/release/andyoliveiraa/Twitch_pontos_Farmer?style=flat&color=white&logo=github&logoColor=white"></a>
+<a href="https://github.com/andyoliveiraa/Twitch_pontos_Farmer/stargazers"><img alt="GitHub Repo stars" src="https://img.shields.io/github/stars/andyoliveiraa/Twitch_pontos_Farmer?style=flat&color=limegreen&logo=github&logoColor=white"></a>
 <a href='https://github.com/MShawon/github-clone-count-badge'><img alt='GitHub Traffic' src='https://img.shields.io/badge/dynamic/json?style=flat&color=blue&label=views&query=count&url=https://gist.githubusercontent.com/rdavydov/ad9a3c6a8d9c322f9a6b62781ea94a93/raw/traffic.json&logo=github&logoColor=white'></a>
 <a href='https://github.com/MShawon/github-clone-count-badge'><img alt='GitHub Clones' src='https://img.shields.io/badge/dynamic/json?style=flat&color=purple&label=clones&query=count&url=https://gist.githubusercontent.com/rdavydov/fed04b31a250ad522d9ea6547ce87f95/raw/clone.json&logo=github&logoColor=white'></a>
-<a href="https://github.com/rdavydov/Twitch-Channel-Points-Miner-v2/blob/master/LICENSE"><img alt="License" src="https://img.shields.io/github/license/rdavydov/Twitch-Channel-Points-Miner-v2?style=flat&color=black&logo=unlicense&logoColor=white"></a>
-<a href="https://github.com/rdavydov/Twitch-Channel-Points-Miner-v2"><img alt="GitHub last commit" src="https://img.shields.io/github/last-commit/rdavydov/Twitch-Channel-Points-Miner-v2?style=flat&color=lightyellow&logo=github&logoColor=white"></a>
+<a href="https://github.com/andyoliveiraa/Twitch_pontos_Farmer/blob/master/LICENSE"><img alt="License" src="https://img.shields.io/github/license/andyoliveiraa/Twitch_pontos_Farmer?style=flat&color=black&logo=unlicense&logoColor=white"></a>
+<a href="https://github.com/andyoliveiraa/Twitch_pontos_Farmer"><img alt="GitHub last commit" src="https://img.shields.io/github/last-commit/andyoliveiraa/Twitch_pontos_Farmer?style=flat&color=lightyellow&logo=github&logoColor=white"></a>
 </p>
 
 <p align="center">
@@ -72,7 +72,7 @@ If you want to offer me a coffee, I would be grateful! ❤️
 |<a href="https://www.donationalerts.com/r/rdavydov" target="_blank"><img src="https://www.donationalerts.com/static/donations/dist/favicon.ico" alt="Donate via DonationAlerts" height="16" width="16"></a>|https://www.donationalerts.com/r/rdavydov|
 |<a href="https://boosty.to/rdavydov/donate" target="_blank"><img src="https://static.boosty.to/static/favicon.png?v=11" alt="Donate via Boosty" height="16" width="16"></a>|https://boosty.to/rdavydov/donate|
 
-If you have any issues or you want to contribute, you are welcome! But please read the [CONTRIBUTING.md](https://github.com/rdavydov/Twitch-Channel-Points-Miner-v2/blob/master/CONTRIBUTING.md) file.
+If you have any issues or you want to contribute, you are welcome! But please read the [CONTRIBUTING.md](https://github.com/andyoliveiraa/Twitch_pontos_Farmer/blob/master/CONTRIBUTING.md) file.
 
 ## Main differences from the original repository:
 
@@ -85,8 +85,8 @@ If you have any issues or you want to contribute, you are welcome! But please re
 - Placing a bet / making a prediction with your channel points [#41](https://github.com/Tkd-Alex/Twitch-Channel-Points-Miner-v2/issues/41) ([@lay295](https://github.com/lay295)) ✔️
 - Switchable analytics chart that shows the progress of your points with various annotations [#96](https://github.com/Tkd-Alex/Twitch-Channel-Points-Miner-v2/issues/96) ✔️
 - Joining the IRC Chat to increase the watch time and get StreamElements points [#47](https://github.com/Tkd-Alex/Twitch-Channel-Points-Miner-v2/issues/47) ✔️
-- [Moments](https://help.twitch.tv/s/article/moments) claiming [#182](https://github.com/rdavydov/Twitch-Channel-Points-Miner-v2/issues/182) ✔️
-- Notifying on `@nickname` mention in the Twitch chat [#227](https://github.com/rdavydov/Twitch-Channel-Points-Miner-v2/issues/227) ✔️
+- [Moments](https://help.twitch.tv/s/article/moments) claiming [#182](https://github.com/andyoliveiraa/Twitch_pontos_Farmer/issues/182) ✔️
+- Notifying on `@nickname` mention in the Twitch chat [#227](https://github.com/andyoliveiraa/Twitch_pontos_Farmer/issues/227) ✔️
 
 ## Logs feature
 ### Full logs
@@ -186,7 +186,7 @@ If you have any issues or you want to contribute, you are welcome! But please re
 ```
 
 ## How to use:
-First of all please create a run.py file. You can just copy [example.py](https://github.com/rdavydov/Twitch-Channel-Points-Miner-v2/blob/master/example.py) and modify it according to your needs.
+First of all please create a run.py file. You can just copy [example.py](https://github.com/andyoliveiraa/Twitch_pontos_Farmer/blob/master/example.py) and modify it according to your needs.
 ```python
 # -*- coding: utf-8 -*-
 
@@ -340,7 +340,7 @@ twitch_miner.mine(followers=True, blacklist=["user1", "user2"])  # Blacklist exa
 ```
 
 ### By cloning the repository
-1. Clone this repository `git clone https://github.com/rdavydov/Twitch-Channel-Points-Miner-v2`
+1. Clone this repository `git clone https://github.com/andyoliveiraa/Twitch_pontos_Farmer`
 2. Install all the requirements `pip install -r requirements.txt` . If you have problems with requirements, make sure to have at least Python3.6. You could also try to create a _virtualenv_ and then install all the requirements
 ```sh
 pip install virtualenv
@@ -418,7 +418,7 @@ docker run --name user2 -v $(pwd)/user2.py:/usr/src/app/run.py:ro -p 5002:5000 r
 
 #### Portainer
 
-[Link](https://github.com/rdavydov/Twitch-Channel-Points-Miner-v2/wiki/Deploy-Docker-container-in-Portainer) to the illustrated guide on how to deploy a Docker container in Portainer.
+[Link](https://github.com/andyoliveiraa/Twitch_pontos_Farmer/wiki/Deploy-Docker-container-in-Portainer) to the illustrated guide on how to deploy a Docker container in Portainer.
 
 ### Replit
 
@@ -451,7 +451,7 @@ You can combine all priority but keep in mind that use `ORDER` and `POINTS_ASCEN
 | `less`          	| bool            	| False                          	                                  | Reduce the logging format and message verbosity [#10](https://github.com/Tkd-Alex/Twitch-Channel-Points-Miner-v2/issues/10)                                                               |
 | `console_level` 	| level 	        | logging.INFO                   	                                  | Level of logs in terminal - Use logging.DEBUG for more helpful messages.             	                                                                                                  |
 | `console_username`| bool 	            | False                   	                                          | Adds a username to every log line in the console if True. [#602](https://github.com/Tkd-Alex/Twitch-Channel-Points-Miner-v2/issues/602)|
-| `time_zone`| str 	            | None                   	                                          | Set a specific time zone for console and file loggers. Use tz database names. Example: "America/Denver" https://github.com/rdavydov/Twitch-Channel-Points-Miner-v2/issues/205|
+| `time_zone`| str 	            | None                   	                                          | Set a specific time zone for console and file loggers. Use tz database names. Example: "America/Denver" https://github.com/andyoliveiraa/Twitch_pontos_Farmer/issues/205|
 | `file_level`    	| level 	        | logging.DEBUG                  	                                  | Level of logs in file save - If you think the log file it's too big, use logging.INFO 	                                                                                                  |
 | `emoji`         	| bool            	| For Windows is False else True 	                                  | On Windows, we have a problem printing emoji. Set to false if you have a problem      	                                                                                                  |
 | `colored`         | bool            	| True 	                                                              | If you want to print colored text [#45](https://github.com/Tkd-Alex/Twitch-Channel-Points-Miner-v2/issues/45) [#82](https://github.com/Tkd-Alex/Twitch-Channel-Points-Miner-v2/issues/82) |
@@ -726,7 +726,7 @@ pkg install python-pandas
 
 **4. Clone this repository**
 
-`git clone https://github.com/rdavydov/Twitch-Channel-Points-Miner-v2`
+`git clone https://github.com/andyoliveiraa/Twitch_pontos_Farmer`
 
 **5. Go to the miner's directory**
 
