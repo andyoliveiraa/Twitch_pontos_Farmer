@@ -108,7 +108,7 @@ twitch_miner = TwitchChannelPointsMiner(
         auto_clear=True,                        # Create a file rotation handler with interval = 1D and backupCount = 7 if True (default)
         time_zone="Europe/Lisbon",                           # Set a specific time zone for console and file loggers. Use tz database names. Example: "America/Denver"
         file_level=logging.DEBUG,               # Level of logs - If you think the log file it's too big, use logging.INFO
-        emoji=True,                             # On Windows, we have a problem printing emoji. Set to false if you have a problem
+        emoji=False,                             # On Windows, we have a problem printing emoji. Set to false if you have a problem
         less=False,                             # If you think that the logs are too verbose, set this to True
         colored=True,                           # If you want to print colored text
         color_palette=ColorPalette(             # You can also create a custom palette color (for the common message).
@@ -159,9 +159,29 @@ twitch_miner = TwitchChannelPointsMiner(
 
 twitch_miner.analytics(host="0.0.0.0", port=8080, refresh=5, days_ago=7)   # Start the Analytics web-server
 
+import json
+streamers_list = []
+streamers_json_path = os.path.join(os.path.dirname(__file__), "streamers.json")
+if os.path.exists(streamers_json_path):
+    try:
+        with open(streamers_json_path, "r", encoding="utf-8") as f:
+            streamers_data = json.load(f)
+            for item in streamers_data:
+                username = item.get("username")
+                if username:
+                    # Carrega as configurações personalizadas de cada streamer
+                    settings = StreamerSettings(
+                        make_predictions=item.get("make_predictions", False),
+                        follow_raid=item.get("follow_raid", True),
+                        claim_drops=item.get("claim_drops", True),
+                        watch_streak=item.get("watch_streak", True)
+                    )
+                    streamers_list.append(Streamer(username, settings))
+    except Exception as e:
+        print(f"Erro ao carregar streamers.json: {e}")
+
 twitch_miner.mine(
-    [
-    ],                                  # Array of streamers (order = priority)
+    streamers_list,                     # Array de streamers carregado dinamicamente do JSON
     followers=True,                    # Automatic download the list of your followers
     followers_order=FollowersOrder.ASC  # Sort the followers list by follow date. ASC or DESC
 )

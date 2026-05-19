@@ -1,0 +1,16 @@
+[
+  {
+    "username": "gaules",
+    "make_predictions": false,
+    "follow_raid": true,
+    "claim_drops": true,
+    "watch_streak": true
+  },
+  {
+    "username": "alanzoka",
+    "make_predictions": false,
+    "follow_raid": true,
+    "claim_drops": true,
+    "watch_streak": true
+  }
+]
