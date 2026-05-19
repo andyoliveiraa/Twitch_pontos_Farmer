@@ -1,4 +1,5 @@
-![Twitch Channel Points Miner - v2](https://raw.githubusercontent.com/rdavydov/Twitch-Channel-Points-Miner-v2/master/assets/banner.png)
+# Twitch Channel Points Miner - V3 (Premium Dashboard Edition) 🚀
+
 <p align="center">
 <a href="https://github.com/rdavydov/Twitch-Channel-Points-Miner-v2/releases"><img alt="Latest Version" src="https://img.shields.io/github/v/release/rdavydov/Twitch-Channel-Points-Miner-v2?style=flat&color=white&logo=github&logoColor=white"></a>
 <a href="https://github.com/rdavydov/Twitch-Channel-Points-Miner-v2/stargazers"><img alt="GitHub Repo stars" src="https://img.shields.io/github/stars/rdavydov/Twitch-Channel-Points-Miner-v2?style=flat&color=limegreen&logo=github&logoColor=white"></a>
@@ -18,7 +19,7 @@
 </p>
 
 
-<h1 align="center">https://github.com/rdavydov/Twitch-Channel-Points-Miner-v2</h1>
+<h1 align="center">Twitch Channel Points Miner V3</h1>
 
 **Credits**
 - Main idea: https://github.com/gottagofaster236/Twitch-Channel-Points-Miner
@@ -660,24 +661,24 @@ Here's a concrete example. Let's suppose we have a bet that is opened with a tim
 - **FROM_END** with `delay=20`: The bet will be placed 20s before the end of the bet (so 9mins 40s after the bet is opened)
 - **PERCENTAGE** with `delay=0.2`: The bet will be placed when the timer went down by 20% (so 2mins after the bet is opened)
 
-## Analytics
-We have recently introduced a little frontend where you can show with a chart you points trend. The script will spawn a Flask web-server on your machine where you can select binding address and port.
-The chart provides some annotation to handle the prediction and watch strike events. Usually annotation are used to notice big increase / decrease of points. If you want to can disable annotations.
-On each (x, y) points Its present a tooltip that show points, date time and reason of points gained / lost. This web page was just a funny idea, and it is not intended to use for a professional usage.
-If you want you can toggle the dark theme with the dedicated checkbox.
+## Analytics & Dashboard V3
 
-| Light theme | Dark theme |
-| ----------- | ---------- |
-| ![Light theme](https://raw.githubusercontent.com/Tkd-Alex/Twitch-Channel-Points-Miner-v2/master/assets/chart-analytics-light.png) | ![Dark theme](https://raw.githubusercontent.com/Tkd-Alex/Twitch-Channel-Points-Miner-v2/master/assets/chart-analytics-dark.png) |
+Welcome to the **V3 Premium Dashboard**! We completely redesigned the analytics interface into an all-in-one control center featuring a stunning **glassmorphism** design theme.
 
-For use this feature just call the `analytics()` method before start mining. Read more at: [#96](https://github.com/Tkd-Alex/Twitch-Channel-Points-Miner-v2/issues/96)
-The chart will be autofreshed each `refresh` minutes. If you want to connect from one to second machine that have that webpanel you have to use `0.0.0.0` instead of `127.0.0.1`. With the `days_ago` arg you can select how many days you want to show by default in your analytics graph.
-```python
-from TwitchChannelPointsMiner import TwitchChannelPointsMiner
-twitch_miner = TwitchChannelPointsMiner("your-twitch-username")
-twitch_miner.analytics(host="127.0.0.1", port=5000, refresh=5, days_ago=7)   # Analytics web-server
-twitch_miner.mine(followers=True, blacklist=["user1", "user2"])
-```
+### Key Features of V3 Dashboard:
+1. **Dynamic Streamer Manager**: Add, edit, or remove streamers on-the-fly directly from the dashboard! When you hit "Salvar e Sincronizar", your choices are instantly saved to `streamers.json` and synchronized in-memory inside the running Python miner (managing IRC chat threads and WebSocket pools without requiring a script restart).
+2. **Real-time Stats Cards**: Get immediate visual feedback on key statistics:
+   - Streamers Online status
+   - Total farmed points
+   - Active session uptime
+   - WebSocket connection pool count
+3. **Advanced Log Console**: Monitor the execution logs of your miner in real-time. Features include:
+   - Live search input to find specific log rows instantly.
+   - Filter logs by severity level: **INFO**, **WARNING**, **ERROR**, **DEBUG**.
+   - Pause/Resume updates and clear terminal log actions.
+4. **Interactive ApexCharts**: A sleek dark timeseries chart visualizes your points gain per streamer, with annotations highlighting prediction events.
+
+To use the V3 premium dashboard, simply ensure you have `enable_analytics=True` and invoke the `analytics()` method in your script before starting the miner (e.g. `twitch_miner.analytics(host="0.0.0.0", port=8080)`).
 
 ### `enable_analytics` option in `twitch_minerfile` toggles Analytics needed for the `analytics()` method
 
