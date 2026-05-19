@@ -242,6 +242,75 @@ $(document).ready(function () {
         $('#setting-predictions').prop('checked', false);
     });
 
+    // Import Followers click handler
+    $('#btn-import-followers').click(function() {
+        var btn = $(this);
+        var originalHtml = btn.html();
+        
+        btn.html('<i class="fa-solid fa-spinner fa-spin"></i> Buscando...').prop('disabled', true);
+        
+        $.getJSON('/api/followers', function(followers) {
+            if (!followers || followers.length === 0) {
+                alert("Nenhum seguidor encontrado no perfil ou erro na requisição.");
+                btn.html(originalHtml).prop('disabled', false);
+                return;
+            }
+            
+            // Pergunta de confirmação
+            var confirmMsg = `Encontrados ${followers.length} streamers na sua lista de seguidores.\n` +
+                             `Deseja adicionar todos eles que não estejam na lista, configurando-os com as opções marcadas abaixo?\n` +
+                             `- Previsões: ${$('#setting-predictions').prop('checked') ? 'Sim' : 'Não'}\n` +
+                             `- Seguir Raids: ${$('#setting-raid').prop('checked') ? 'Sim' : 'Não'}\n` +
+                             `- Drops: ${$('#setting-drops').prop('checked') ? 'Sim' : 'Não'}\n` +
+                             `- Streak: ${$('#setting-streak').prop('checked') ? 'Sim' : 'Não'}`;
+                             
+            if (!confirm(confirmMsg)) {
+                btn.html(originalHtml).prop('disabled', false);
+                return;
+            }
+            
+            var addedCount = 0;
+            var predictionsVal = $('#setting-predictions').prop('checked');
+            var raidVal = $('#setting-raid').prop('checked');
+            var dropsVal = $('#setting-drops').prop('checked');
+            var streakVal = $('#setting-streak').prop('checked');
+            
+            followers.forEach(function(username) {
+                username = username.trim().toLowerCase();
+                if (!username) return;
+                
+                var exists = streamersConfig.some(function(item) {
+                    return item.username.toLowerCase() === username;
+                });
+                
+                if (!exists) {
+                    streamersConfig.push({
+                        username: username,
+                        make_predictions: predictionsVal,
+                        follow_raid: raidVal,
+                        claim_drops: dropsVal,
+                        watch_streak: streakVal,
+                        is_online: false,
+                        points: 0,
+                        running: false
+                    });
+                    addedCount++;
+                }
+            });
+            
+            renderStreamersConfigTable();
+            alert(`Sucesso! ${addedCount} novos streamers foram adicionados à lista de configurações.\nNão se esqueça de clicar em "Salvar e Sincronizar Minerador" para aplicar as mudanças!`);
+            btn.html(originalHtml).prop('disabled', false);
+        }).fail(function(xhr) {
+            var errorMsg = "Erro ao buscar seguidores do Twitch.";
+            if (xhr.responseJSON && xhr.responseJSON.error) {
+                errorMsg += "\nDetalhe: " + xhr.responseJSON.error;
+            }
+            alert(errorMsg);
+            btn.html(originalHtml).prop('disabled', false);
+        });
+    });
+
     // Save Streamers list to Backend
     $('#btn-save-streamers').click(function() {
         var cleanConfig = streamersConfig.map(function(item) {

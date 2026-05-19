@@ -426,6 +426,16 @@ class AnalyticsServer(Thread):
             }
             return Response(json.dumps(data), status=200, mimetype="application/json")
 
+        def get_followers_list():
+            if not self.miner or not self.miner.twitch:
+                return Response(json.dumps({"error": "Minerador não inicializado ou sem instância do Twitch"}), status=400, mimetype="application/json")
+            try:
+                followers = self.miner.twitch.get_followers()
+                return Response(json.dumps(followers), status=200, mimetype="application/json")
+            except Exception as e:
+                logger.error(f"Erro ao buscar seguidores: {e}")
+                return Response(json.dumps({"error": str(e)}), status=500, mimetype="application/json")
+
         self.app = Flask(
             __name__,
             template_folder=os.path.join(Path().absolute(), "assets"),
@@ -456,6 +466,9 @@ class AnalyticsServer(Thread):
         )
         self.app.add_url_rule(
             "/api/miner_status", "get_miner_status", get_miner_status, methods=["GET"]
+        )
+        self.app.add_url_rule(
+            "/api/followers", "get_followers_list", get_followers_list, methods=["GET"]
         )
 
     def run(self):
