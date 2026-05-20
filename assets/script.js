@@ -333,26 +333,26 @@ function renderStreamers() {
         var mockPct = Math.floor(Math.random() * (100 - 40 + 1)) + 40; 
         var pctColorClass = mockPct >= 85 ? 'emerald' : 'text-primary';
         
-        var listItemHtml = \`
-        <li class="\${activeClass}">
+        var listItemHtml = `
+        <li class="${activeClass}">
             <a href="#" class="streamer-card">
                 <div class="streamer-icon-box">
                     <i class="fa-brands fa-twitch"></i>
                 </div>
                 <div class="streamer-details">
                     <div class="streamer-header">
-                        <span class="streamer-name">\${displayname}</span>
+                        <span class="streamer-name">${displayname}</span>
                     </div>
                     <div class="streamer-stats">
-                        <span class="streamer-pts">\${millify(streamer.points)}</span>
-                        <span class="streamer-pct \${pctColorClass}">\${mockPct}%</span>
+                        <span class="streamer-pts">${millify(streamer.points)}</span>
+                        <span class="streamer-pct ${pctColorClass}">${mockPct}%</span>
                     </div>
                     <div class="streamer-progress-track">
-                        <div class="streamer-progress-fill" style="width: \${mockPct}%"></div>
+                        <div class="streamer-progress-fill" style="width: ${mockPct}%"></div>
                     </div>
                 </div>
             </a>
-        </li>\`;
+        </li>`;
         
         var listItem = $(listItemHtml);
         
