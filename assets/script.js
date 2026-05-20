@@ -327,11 +327,34 @@ function renderStreamers() {
     streamersList.forEach(function(streamer, index) {
         var displayname = streamer.name.replace(".json", "");
         var isActive = currentStreamer === streamer.name;
-        
-        var pointsText = `<span style="font-size: 0.75rem; background: rgba(255,255,255,0.06); padding: 0.1rem 0.35rem; border-radius: 4px; font-family: Fira Code;">${millify(streamer.points)}</span>`;
         var activeClass = isActive ? 'is-active' : '';
         
-        var listItem = $(`<li class="${activeClass}"><a style="display:flex; justify-content:space-between; align-items:center;"><span><i class="fa-brands fa-twitch" style="margin-right: 6px; font-size: 0.8rem; color:#9146ff;"></i>${displayname}</span> ${pointsText}</a></li>`);
+        // Mock percentage for visual progress bar matching the layout
+        var mockPct = Math.floor(Math.random() * (100 - 40 + 1)) + 40; 
+        var pctColorClass = mockPct >= 85 ? 'emerald' : 'text-primary';
+        
+        var listItemHtml = \`
+        <li class="\${activeClass}">
+            <a href="#" class="streamer-card">
+                <div class="streamer-icon-box">
+                    <i class="fa-brands fa-twitch"></i>
+                </div>
+                <div class="streamer-details">
+                    <div class="streamer-header">
+                        <span class="streamer-name">\${displayname}</span>
+                    </div>
+                    <div class="streamer-stats">
+                        <span class="streamer-pts">\${millify(streamer.points)}</span>
+                        <span class="streamer-pct \${pctColorClass}">\${mockPct}%</span>
+                    </div>
+                    <div class="streamer-progress-track">
+                        <div class="streamer-progress-fill" style="width: \${mockPct}%"></div>
+                    </div>
+                </div>
+            </a>
+        </li>\`;
+        
+        var listItem = $(listItemHtml);
         
         listItem.find('a').click(function(e) {
             e.preventDefault();
