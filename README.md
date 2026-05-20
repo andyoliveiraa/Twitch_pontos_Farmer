@@ -19,6 +19,10 @@
 </p>
 
 
+<p align="center">
+<img src="./assets/banner.png" alt="Twitch Channel Points Miner V3 Banner">
+</p>
+
 <h1 align="center">Twitch Channel Points Miner V3</h1>
 
 **Credits**
@@ -612,7 +616,7 @@ Allowed values for `chat` are:
 - **NUMBER_7**: Always select the 7th option
 - **NUMBER_8**: Always select the 8th option
 
-![Screenshot](https://raw.githubusercontent.com/Tkd-Alex/Twitch-Channel-Points-Miner-v2/master/assets/prediction.png)
+![Screenshot](./assets/prediction.png)
 
 Here a concrete example:
 
@@ -664,6 +668,8 @@ Here's a concrete example. Let's suppose we have a bet that is opened with a tim
 ## Analytics & Dashboard V3
 
 Welcome to the **V3 Premium Dashboard**! We completely redesigned the analytics interface into an all-in-one control center featuring a stunning **glassmorphism** design theme.
+
+![Dashboard V3](./assets/chart-analytics-dark.png)
 
 ### Key Features of V3 Dashboard:
 1. **Dynamic Streamer Manager**: Add, edit, or remove streamers on-the-fly directly from the dashboard! When you hit "Salvar e Sincronizar", your choices are instantly saved to `streamers.json` and synchronized in-memory inside the running Python miner (managing IRC chat threads and WebSocket pools without requiring a script restart).
