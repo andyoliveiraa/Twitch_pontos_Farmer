@@ -95,7 +95,6 @@ var chart = new ApexCharts(document.querySelector("#chart"), options);
 var currentStreamer = null;
 var annotations = [];
 var streamersList = [];
-var streamersConfig = []; // Para a tabela de configurações
 var sortBy = "Name ascending";
 var sortField = 'name';
 
@@ -155,12 +154,10 @@ $(document).ready(function () {
 
     // 2. Poll Status & Fetch Lists
     getMinerStatus();
-    getStreamersConfig();
     getStreamers();
     getLog();
     
     setInterval(getMinerStatus, 2500); // Poll status every 2.5s
-    setInterval(getStreamersConfig, 10000); // Refresh online config badges
     
     // 3. User Interface Handlers
     $('#dark-mode').change(function () {
@@ -215,141 +212,6 @@ $(document).ready(function () {
         $('#sort-dropdown').removeClass('is-active');
     });
 
-    // Add Streamer Form submission
-    $('#add-streamer-form').submit(function(e) {
-        e.preventDefault();
-        var username = $('#new-streamer-username').val().trim().toLowerCase();
-        if (!username) return;
-        
-        // Verificação de duplicados
-        var exists = streamersConfig.some(function(item) {
-            return item.username.toLowerCase() === username;
-        });
-        
-        if (exists) {
-            alert("Este streamer já está cadastrado!");
-            return;
-        }
-        
-        var newStreamer = {
-            username: username,
-            make_predictions: $('#setting-predictions').prop('checked'),
-            follow_raid: $('#setting-raid').prop('checked'),
-            claim_drops: $('#setting-drops').prop('checked'),
-            watch_streak: $('#setting-streak').prop('checked'),
-            is_online: false,
-            points: 0,
-            running: false
-        };
-        
-        streamersConfig.push(newStreamer);
-        renderStreamersConfigTable();
-        
-        // Reset form input
-        $('#new-streamer-username').val('');
-        $('#setting-predictions').prop('checked', false);
-    });
-
-    // Import Followers click handler
-    $('#btn-import-followers').click(function() {
-        var btn = $(this);
-        var originalHtml = btn.html();
-        
-        btn.html('<i class="fa-solid fa-spinner fa-spin"></i> Buscando...').prop('disabled', true);
-        
-        $.getJSON('/api/followers', function(followers) {
-            if (!followers || followers.length === 0) {
-                alert("Nenhum seguidor encontrado no perfil ou erro na requisição.");
-                btn.html(originalHtml).prop('disabled', false);
-                return;
-            }
-            
-            // Pergunta de confirmação
-            var confirmMsg = `Encontrados ${followers.length} streamers na sua lista de seguidores.\n` +
-                             `Deseja adicionar todos eles que não estejam na lista, configurando-os com as opções marcadas abaixo?\n` +
-                             `- Previsões: ${$('#setting-predictions').prop('checked') ? 'Sim' : 'Não'}\n` +
-                             `- Seguir Raids: ${$('#setting-raid').prop('checked') ? 'Sim' : 'Não'}\n` +
-                             `- Drops: ${$('#setting-drops').prop('checked') ? 'Sim' : 'Não'}\n` +
-                             `- Streak: ${$('#setting-streak').prop('checked') ? 'Sim' : 'Não'}`;
-                             
-            if (!confirm(confirmMsg)) {
-                btn.html(originalHtml).prop('disabled', false);
-                return;
-            }
-            
-            var addedCount = 0;
-            var predictionsVal = $('#setting-predictions').prop('checked');
-            var raidVal = $('#setting-raid').prop('checked');
-            var dropsVal = $('#setting-drops').prop('checked');
-            var streakVal = $('#setting-streak').prop('checked');
-            
-            followers.forEach(function(username) {
-                username = username.trim().toLowerCase();
-                if (!username) return;
-                
-                var exists = streamersConfig.some(function(item) {
-                    return item.username.toLowerCase() === username;
-                });
-                
-                if (!exists) {
-                    streamersConfig.push({
-                        username: username,
-                        make_predictions: predictionsVal,
-                        follow_raid: raidVal,
-                        claim_drops: dropsVal,
-                        watch_streak: streakVal,
-                        is_online: false,
-                        points: 0,
-                        running: false
-                    });
-                    addedCount++;
-                }
-            });
-            
-            renderStreamersConfigTable();
-            alert(`Sucesso! ${addedCount} novos streamers foram adicionados à lista de configurações.\nNão se esqueça de clicar em "Salvar e Sincronizar Minerador" para aplicar as mudanças!`);
-            btn.html(originalHtml).prop('disabled', false);
-        }).fail(function(xhr) {
-            var errorMsg = "Erro ao buscar seguidores do Twitch.";
-            if (xhr.responseJSON && xhr.responseJSON.error) {
-                errorMsg += "\nDetalhe: " + xhr.responseJSON.error;
-            }
-            alert(errorMsg);
-            btn.html(originalHtml).prop('disabled', false);
-        });
-    });
-
-    // Save Streamers list to Backend
-    $('#btn-save-streamers').click(function() {
-        var cleanConfig = streamersConfig.map(function(item) {
-            return {
-                username: item.username,
-                make_predictions: item.make_predictions,
-                follow_raid: item.follow_raid,
-                claim_drops: item.claim_drops,
-                watch_streak: item.watch_streak
-            };
-        });
-        
-        $(this).html('<i class="fa-solid fa-spinner fa-spin"></i> Sincronizando...').prop('disabled', true);
-        
-        $.ajax({
-            url: '/api/streamers_config',
-            type: 'POST',
-            contentType: 'application/json',
-            data: JSON.stringify(cleanConfig),
-            success: function(response) {
-                alert("Streamers atualizados com sucesso e aplicados no minerador!");
-                $('#btn-save-streamers').html('<i class="fa-solid fa-floppy-disk"></i> Salvar e Sincronizar Minerador').prop('disabled', false);
-                getStreamersConfig();
-                getStreamers();
-            },
-            error: function(xhr, status, error) {
-                alert("Erro ao salvar streamers: " + error);
-                $('#btn-save-streamers').html('<i class="fa-solid fa-floppy-disk"></i> Salvar e Sincronizar Minerador').prop('disabled', false);
-            }
-        });
-    });
 
     // Real-time log search and filters
     $('#log-search').on('input', function() {
@@ -398,79 +260,6 @@ function getMinerStatus() {
     });
 }
 
-// Fetch streamers.json configuration
-function getStreamersConfig() {
-    $.getJSON('/api/streamers_config', function(data) {
-        streamersConfig = data;
-        renderStreamersConfigTable();
-    });
-}
-
-// Render dynamic streamers config manager table
-function renderStreamersConfigTable() {
-    var tbody = $('#streamers-config-tbody');
-    tbody.empty();
-    
-    if (streamersConfig.length === 0) {
-        tbody.append('<tr><td colspan="5" style="text-align: center; color: var(--text-muted);">Nenhum streamer cadastrado. Adicione um acima!</td></tr>');
-        return;
-    }
-    
-    streamersConfig.forEach(function(streamer, index) {
-        var statusBadge = streamer.is_online ? 
-            '<span class="badge-status online"><i class="fa-solid fa-signal"></i> LIVE</span>' : 
-            '<span class="badge-status offline">OFFLINE</span>';
-            
-        var predictionsChecked = streamer.make_predictions ? 'checked' : '';
-        var raidChecked = streamer.follow_raid ? 'checked' : '';
-        var dropsChecked = streamer.claim_drops ? 'checked' : '';
-        var streakChecked = streamer.watch_streak ? 'checked' : '';
-        
-        var tr = $(`
-            <tr data-index="${index}">
-                <td class="streamer-row-name">${streamer.username}</td>
-                <td>${statusBadge}</td>
-                <td class="points-text">${streamer.points ? millify(streamer.points) : '0'}</td>
-                <td>
-                    <div style="display: flex; gap: 0.6rem; flex-wrap: wrap;">
-                        <label class="checkbox-control" style="font-size: 0.75rem;">
-                            <input type="checkbox" class="tbl-predict" ${predictionsChecked}> Previsão
-                        </label>
-                        <label class="checkbox-control" style="font-size: 0.75rem;">
-                            <input type="checkbox" class="tbl-raid" ${raidChecked}> Raids
-                        </label>
-                        <label class="checkbox-control" style="font-size: 0.75rem;">
-                            <input type="checkbox" class="tbl-drops" ${dropsChecked}> Drops
-                        </label>
-                        <label class="checkbox-control" style="font-size: 0.75rem;">
-                            <input type="checkbox" class="tbl-streak" ${streakChecked}> Streak
-                        </label>
-                    </div>
-                </td>
-                <td>
-                    <button class="action-icon-btn btn-delete-streamer" title="Remover Streamer">
-                        <i class="fa-solid fa-trash-can"></i>
-                    </button>
-                </td>
-            </tr>
-        `);
-        
-        // Bind events to table controls
-        tr.find('.tbl-predict').change(function() { streamersConfig[index].make_predictions = this.checked; });
-        tr.find('.tbl-raid').change(function() { streamersConfig[index].follow_raid = this.checked; });
-        tr.find('.tbl-drops').change(function() { streamersConfig[index].claim_drops = this.checked; });
-        tr.find('.tbl-streak').change(function() { streamersConfig[index].watch_streak = this.checked; });
-        
-        tr.find('.btn-delete-streamer').click(function() {
-            if (confirm(`Tem certeza que deseja remover ${streamer.username}?`)) {
-                streamersConfig.splice(index, 1);
-                renderStreamersConfigTable();
-            }
-        });
-        
-        tbody.append(tr);
-    });
-}
 
 // Fetch streamers available in analytics
 function getStreamers() {

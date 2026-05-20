@@ -168,79 +168,7 @@
                 </div>
             </section>
 
-            <!-- Right Panel: Streamer Manager -->
-            <section class="right-panel">
-                <div class="panel-card glass-card">
-                    <div class="panel-header">
-                        <div class="panel-title">
-                            <i class="fa-solid fa-sliders"></i>
-                            <h3>Configuração dos Streamers</h3>
-                        </div>
-                    </div>
-                    
-                    <!-- Add Streamer Form -->
-                    <div class="add-streamer-box">
-                        <h4>Adicionar Streamer</h4>
-                        <form id="add-streamer-form">
-                            <div class="form-row">
-                                <div class="input-with-icon">
-                                    <i class="fa-brands fa-twitch"></i>
-                                    <input type="text" id="new-streamer-username" placeholder="Nome do Canal" required>
-                                </div>
-                                <button type="submit" class="btn btn-primary">
-                                    <i class="fa-solid fa-plus"></i> Adicionar
-                                </button>
-                                <button type="button" id="btn-import-followers" class="btn btn-primary" style="background: rgba(145, 70, 255, 0.12); border: 1px solid rgba(145, 70, 255, 0.25); color: #b380ff; box-shadow: none;">
-                                    <i class="fa-solid fa-users"></i> Importar Seguidores
-                                </button>
-                            </div>
-                            
-                            <div class="form-checkboxes">
-                                <label class="checkbox-control">
-                                    <input type="checkbox" id="setting-predictions">
-                                    <span>Previsões</span>
-                                </label>
-                                <label class="checkbox-control">
-                                    <input type="checkbox" id="setting-raid" checked>
-                                    <span>Seguir Raids</span>
-                                </label>
-                                <label class="checkbox-control">
-                                    <input type="checkbox" id="setting-drops" checked>
-                                    <span>Drops</span>
-                                </label>
-                                <label class="checkbox-control">
-                                    <input type="checkbox" id="setting-streak" checked>
-                                    <span>Streak</span>
-                                </label>
-                            </div>
-                        </form>
-                    </div>
 
-                    <!-- Streamers Config List -->
-                    <div class="streamers-config-table-container">
-                        <table class="streamers-config-table">
-                            <thead>
-                                <tr>
-                                    <th>Canal</th>
-                                    <th>Status</th>
-                                    <th>Pontos</th>
-                                    <th>Configurações</th>
-                                    <th style="width: 50px;">Ações</th>
-                                </tr>
-                            </thead>
-                            <tbody id="streamers-config-tbody">
-                                <!-- Injected dynamically via script.js -->
-                            </tbody>
-                        </table>
-                    </div>
-                    
-                    <div class="save-actions">
-                        <button id="btn-save-streamers" class="btn btn-accent">
-                            <i class="fa-solid fa-floppy-disk"></i> Salvar e Sincronizar Minerador
-                        </button>
-                    </div>
-                </div>
-            </section>
         </div>
 
         <!-- Full-width Section: Live Log Terminal -->

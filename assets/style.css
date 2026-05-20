@@ -312,17 +312,10 @@ body {
     letter-spacing: -0.5px;
 }
 
-/* Two-column Main Layout */
+/* Full-width Main Layout */
 .main-content-layout {
-    display: grid;
-    grid-template-columns: 1.8fr 1.2fr;
-    gap: 1.5rem;
-}
-
-@media (max-width: 1024px) {
-    .main-content-layout {
-        grid-template-columns: 1fr;
-    }
+    display: block;
+    width: 100%;
 }
 
 .panel-card {
