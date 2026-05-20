@@ -103,7 +103,8 @@ var startDate = new Date();
 startDate.setDate(startDate.getDate() - (daysAgo || 7));
 var endDate = new Date();
 
-var allLogsContent = "";
+var logLinesArray = [];
+var MAX_LOG_LINES = 800;
 var lastReceivedLogIndex = 0;
 var autoUpdateLog = true;
 var autoScrollLogs = true;
@@ -170,6 +171,13 @@ $(document).ready(function () {
     $('#annotations').change(function () {
         localStorage.setItem("annotations", this.checked);
         updateAnnotations();
+    });
+    
+    $('#log').change(function() {
+        autoScrollLogs = this.checked;
+        if (autoScrollLogs && $("#log-content")[0]) {
+            $("#log-content").scrollTop($("#log-content")[0].scrollHeight);
+        }
     });
     
     $('#startDate').change(function() {
@@ -355,7 +363,7 @@ $(document).ready(function () {
     });
 
     $('#clear-log').click(function() {
-        allLogsContent = "";
+        logLinesArray = [];
         renderLogs();
     });
 
@@ -559,16 +567,26 @@ function sortStreamers() {
 
 // Log Terminal updating
 function getLog() {
-    if (autoUpdateLog && $('#log').prop('checked')) {
+    if (autoUpdateLog) {
         $.get(`/log?lastIndex=${lastReceivedLogIndex}`, function (data) {
-            if (data && data.trim()) {
-                allLogsContent += data;
+            if (data && data.length > 0) {
                 lastReceivedLogIndex += data.length;
-                renderLogs();
+                if (data.trim()) {
+                    var newLines = data.split('\n');
+                    for (var i = 0; i < newLines.length; i++) {
+                        if (newLines[i].trim() !== '') {
+                            logLinesArray.push(newLines[i]);
+                        }
+                    }
+                    if (logLinesArray.length > MAX_LOG_LINES) {
+                        logLinesArray = logLinesArray.slice(logLinesArray.length - MAX_LOG_LINES);
+                    }
+                    renderLogs();
+                }
             }
             
             if (autoUpdateLog) {
-                setTimeout(getLog, 1500); // Fetch log entries every 1.5s
+                setTimeout(getLog, 500); // Fetch log entries every 500ms
             }
         }).fail(function() {
             if (autoUpdateLog) {
@@ -580,17 +598,15 @@ function getLog() {
 
 // Render and filter logs on-the-fly client-side
 function renderLogs() {
-    var rawLogs = allLogsContent;
-    if (!rawLogs) {
+    if (logLinesArray.length === 0) {
         $("#log-content").html('<span style="color: var(--text-muted);">Aguardando novos logs do terminal...</span>');
         return;
     }
     
-    var lines = rawLogs.split('\n');
     var searchQuery = $('#log-search').val().toLowerCase();
     var levelFilter = $('.level-btn.active').data('level');
     
-    var filteredLines = lines.filter(function(line) {
+    var filteredLines = logLinesArray.filter(function(line) {
         if (!line.trim()) return false;
         
         // Filter by Search Query
