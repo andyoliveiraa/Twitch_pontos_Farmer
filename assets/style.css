@@ -1,18 +1,18 @@
 /* Design Tokens & Theme Variables */
 :root {
-    --bg-main: #06060c;
-    --bg-glow-1: rgba(145, 70, 255, 0.12);
-    --bg-glow-2: rgba(0, 240, 255, 0.08);
+    --bg-main: #0c0a13;
+    --bg-glow-1: rgba(184, 41, 255, 0.12);
+    --bg-glow-2: rgba(184, 41, 255, 0.08);
     
-    --glass-bg: rgba(13, 13, 25, 0.65);
-    --glass-card-bg: rgba(22, 22, 38, 0.45);
-    --glass-border: rgba(255, 255, 255, 0.07);
-    --glass-border-focus: rgba(145, 70, 255, 0.4);
-    --glass-shadow: rgba(0, 0, 0, 0.4);
+    --glass-bg: rgba(18, 15, 26, 0.7);
+    --glass-card-bg: rgba(26, 22, 38, 0.5);
+    --glass-border: rgba(255, 255, 255, 0.1);
+    --glass-border-focus: rgba(184, 41, 255, 0.4);
+    --glass-shadow: rgba(0, 0, 0, 0.5);
     
-    --twitch-purple: #9146ff;
-    --twitch-purple-hover: #a262ff;
-    --twitch-purple-glow: rgba(145, 70, 255, 0.25);
+    --twitch-purple: #b829ff;
+    --twitch-purple-hover: #c95cff;
+    --twitch-purple-glow: rgba(184, 41, 255, 0.3);
     
     --neon-blue: #00f0ff;
     --neon-blue-glow: rgba(0, 240, 255, 0.2);
@@ -131,18 +131,35 @@ body {
     -webkit-text-fill-color: transparent;
 }
 
-.sub-logo {
-    font-size: 0.8rem;
-    color: var(--text-secondary);
-    display: block;
-    margin-top: -2px;
-}
-
 .header-actions {
     display: flex;
     align-items: center;
     gap: 1.5rem;
     flex-wrap: wrap;
+}
+
+.search-box {
+    display: flex;
+    align-items: center;
+    background: rgba(0,0,0,0.4);
+    border: 1px solid var(--glass-border);
+    border-radius: 8px;
+    padding: 0.5rem 1rem;
+    width: 300px;
+}
+
+.search-box i {
+    color: var(--text-muted);
+    margin-right: 0.8rem;
+}
+
+.search-box input {
+    background: transparent;
+    border: none;
+    color: var(--text-primary);
+    outline: none;
+    width: 100%;
+    font-family: var(--font-outfit);
 }
 
 .status-indicator {
@@ -312,10 +329,24 @@ body {
     letter-spacing: -0.5px;
 }
 
-/* Full-width Main Layout */
+/* Main Layout */
 .main-content-layout {
-    display: block;
-    width: 100%;
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    gap: 1.5rem;
+    align-items: start;
+}
+
+.content-panel {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+@media (max-width: 1024px) {
+    .main-content-layout {
+        grid-template-columns: 1fr;
+    }
 }
 
 .panel-card {

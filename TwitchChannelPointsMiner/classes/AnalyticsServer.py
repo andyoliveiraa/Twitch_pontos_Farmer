@@ -405,11 +405,15 @@ class AnalyticsServer(Thread):
                 return Response(json.dumps({"running": False}), status=200, mimetype="application/json")
             
             uptime_str = "00:00:00"
+            uptime_seconds = 0
+            started_str = ""
             if self.miner.start_datetime:
                 delta = datetime.now() - self.miner.start_datetime
-                hours, remainder = divmod(int(delta.total_seconds()), 3600)
+                uptime_seconds = int(delta.total_seconds())
+                hours, remainder = divmod(uptime_seconds, 3600)
                 minutes, seconds = divmod(remainder, 60)
-                uptime_str = f"{hours:02d}:{minutes:02d}:{seconds:02d}"
+                uptime_str = f"{hours:02d}h:{minutes:02d}m:{seconds:02d}s"
+                started_str = self.miner.start_datetime.strftime("%I:%M %p")
                 
             total_points = sum(s.channel_points for s in self.miner.streamers)
             online_count = sum(1 for s in self.miner.streamers if s.is_online)
@@ -419,6 +423,8 @@ class AnalyticsServer(Thread):
                 "session_id": self.miner.session_id,
                 "username": self.miner.username,
                 "uptime": uptime_str,
+                "uptime_seconds": uptime_seconds,
+                "started": started_str,
                 "total_points": total_points,
                 "total_streamers": len(self.miner.streamers),
                 "online_streamers": online_count,

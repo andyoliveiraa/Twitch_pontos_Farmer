@@ -31,11 +31,17 @@
         <header class="main-header glass-card animate-fade-in">
             <div class="header-brand">
                 <div class="logo-icon">
-                    <i class="fa-brands fa-twitch"></i>
+                    <i class="fa-brands fa-space-awesome"></i>
                 </div>
                 <div>
-                    <h1>TWITCH MINER V2</h1>
-                    <span class="sub-logo">Painel de Controle Inteligente</span>
+                    <h1>NEBULA MINER</h1>
+                </div>
+            </div>
+            
+            <div class="header-search">
+                <div class="search-box">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <input type="text" id="global-search" placeholder="Search...">
                 </div>
             </div>
             
@@ -68,50 +74,64 @@
         <!-- Stats Row -->
         <section class="stats-grid animate-fade-in delay-1">
             <div class="stat-card glass-card">
-                <div class="stat-icon purple">
-                    <i class="fa-solid fa-video"></i>
+                <div class="stat-header">
+                    <i class="fa-regular fa-user"></i> <span>ONLINE STREAMERS</span>
                 </div>
-                <div class="stat-info">
-                    <span class="stat-label">Streamers Online</span>
-                    <h2 class="stat-value" id="stats-online">0 / 0</h2>
-                </div>
-            </div>
-            
-            <div class="stat-card glass-card">
-                <div class="stat-icon emerald">
-                    <i class="fa-solid fa-coins"></i>
-                </div>
-                <div class="stat-info">
-                    <span class="stat-label">Pontos Farmados</span>
-                    <h2 class="stat-value" id="stats-points">0</h2>
+                <div class="stat-body">
+                    <h2 class="stat-value"><span id="stats-online">0</span> <span class="stat-subtext emerald" id="stats-online-pct">+0%</span></h2>
+                    <p class="stat-footer"><span class="status-dot pulsing"></span> Live pulsing</p>
                 </div>
             </div>
             
             <div class="stat-card glass-card">
-                <div class="stat-icon amber">
-                    <i class="fa-solid fa-hourglass-half"></i>
+                <div class="stat-header">
+                    <i class="fa-solid fa-database"></i> <span>TOTAL POINTS FARMED</span>
                 </div>
-                <div class="stat-info">
-                    <span class="stat-label">Tempo de Sessão</span>
-                    <h2 class="stat-value" id="stats-uptime">00:00:00</h2>
+                <div class="stat-body">
+                    <h2 class="stat-value"><span id="stats-points">0</span> <span class="stat-unit">pts</span></h2>
+                    <p class="stat-footer emerald" id="stats-pts-hr">+0 pts/hr</p>
                 </div>
             </div>
             
             <div class="stat-card glass-card">
-                <div class="stat-icon blue">
-                    <i class="fa-solid fa-circle-nodes"></i>
+                <div class="stat-header">
+                    <i class="fa-regular fa-clock"></i> <span>SESSION UPTIME</span>
                 </div>
-                <div class="stat-info">
-                    <span class="stat-label">Conexões Ativas</span>
-                    <h2 class="stat-value" id="stats-connections">0 WebSockets</h2>
+                <div class="stat-body">
+                    <h2 class="stat-value" id="stats-uptime">00h:00m:00s</h2>
+                    <p class="stat-footer text-muted" id="stats-started">Started --:--</p>
+                </div>
+            </div>
+            
+            <div class="stat-card glass-card">
+                <div class="stat-header">
+                    <i class="fa-solid fa-arrow-right-arrow-left"></i> <span>WEBSOCKETS</span>
+                </div>
+                <div class="stat-body">
+                    <h2 class="stat-value emerald" id="stats-ws-status">Connected</h2>
+                    <p class="stat-footer text-muted"><span id="stats-connections">0</span> Active Nodes &nbsp;&nbsp;<span class="emerald" id="stats-latency">Latency 42ms</span></p>
                 </div>
             </div>
         </section>
 
         <!-- Main Workspace Area -->
         <div class="main-content-layout animate-fade-in delay-2">
-            <!-- Left Panel: Analytics & Chart -->
-            <section class="left-panel">
+            <!-- Left Panel: Active Streamers -->
+            <aside class="sidebar-panel glass-card">
+                <div class="panel-header">
+                    <h3>Active Streamers</h3>
+                    <i class="fa-solid fa-ellipsis-vertical"></i>
+                </div>
+                <div class="streamers-sidebar">
+                    <ul class="streamer-tabs-list" id="streamers-list">
+                        <!-- Streamers inserted dynamically -->
+                        <div class="loading-placeholder">Carregando lista...</div>
+                    </ul>
+                </div>
+            </aside>
+
+            <!-- Right Panel: Chart & Logs -->
+            <div class="content-panel">
                 <div class="panel-card glass-card">
                     <div class="panel-header">
                         <div class="panel-title">
@@ -152,63 +172,47 @@
                     </div>
                     
                     <div class="chart-content-area">
-                        <!-- Streamers Sub-menu -->
-                        <div class="streamers-sidebar">
-                            <ul class="streamer-tabs-list" id="streamers-list">
-                                <!-- Streamers inserted dynamically -->
-                                <div class="loading-placeholder">Carregando lista...</div>
-                            </ul>
-                        </div>
-                        
                         <!-- Real ApexChart -->
                         <div class="chart-canvas-container">
                             <div id="chart"></div>
                         </div>
                     </div>
                 </div>
-            </section>
 
-
-        </div>
-
-        <!-- Full-width Section: Live Log Terminal -->
-        <section class="log-section animate-fade-in delay-3" id="log-box">
-            <div class="panel-card glass-card">
-                <div class="panel-header">
-                    <div class="panel-title">
-                        <i class="fa-solid fa-square-poll-horizontal"></i>
-                        <h3>Console de Logs em Tempo Real</h3>
+                <!-- Live Log Terminal (moved inside content-panel) -->
+                <div class="log-card glass-card" id="log-box">
+                    <div class="panel-header">
+                        <h3 style="text-transform: uppercase; margin-bottom: 1rem;">LIVE ACTIVITY LOG</h3>
+                        <div class="log-toolbar">
+                            <!-- Search Box -->
+                            <div class="search-box">
+                                <i class="fa-solid fa-magnifying-glass"></i>
+                                <input type="text" id="log-search" placeholder="Buscar nos logs...">
+                            </div>
+                            
+                            <!-- Level Filter Tags -->
+                            <div class="log-level-filters">
+                                <button class="level-btn active" data-level="ALL">Todos</button>
+                                <button class="level-btn" data-level="INFO">Info</button>
+                                <button class="level-btn" data-level="WARNING">Avisos</button>
+                                <button class="level-btn" data-level="ERROR">Erros</button>
+                            </div>
+                            
+                            <!-- Control Buttons -->
+                            <div class="log-actions">
+                                <button id="auto-update-log" class="control-btn" title="Pausar / Retomar Logs">⏸️ Pausar</button>
+                                <button id="clear-log" class="control-btn warning" title="Limpar Console"><i class="fa-solid fa-trash-can"></i> Limpar</button>
+                            </div>
+                        </div>
                     </div>
                     
-                    <div class="log-toolbar">
-                        <!-- Search Box -->
-                        <div class="search-box">
-                            <i class="fa-solid fa-magnifying-glass"></i>
-                            <input type="text" id="log-search" placeholder="Buscar nos logs...">
-                        </div>
-                        
-                        <!-- Level Filter Tags -->
-                        <div class="log-level-filters">
-                            <button class="level-btn active" data-level="ALL">Todos</button>
-                            <button class="level-btn" data-level="INFO">Info</button>
-                            <button class="level-btn" data-level="WARNING">Avisos</button>
-                            <button class="level-btn" data-level="ERROR">Erros</button>
-                        </div>
-                        
-                        <!-- Control Buttons -->
-                        <div class="log-actions">
-                            <button id="auto-update-log" class="control-btn" title="Pausar / Retomar Logs">⏸️ Pausar</button>
-                            <button id="clear-log" class="control-btn warning" title="Limpar Console"><i class="fa-solid fa-trash-can"></i> Limpar</button>
-                        </div>
+                    <div class="terminal-body">
+                        <pre id="log-content">Inicializando visualizador de logs...&#10;&#13;</pre>
                     </div>
                 </div>
-                
-                <div class="terminal-body">
-                    <pre id="log-content">Inicializando visualizador de logs...&#10;&#13;</pre>
-                </div>
             </div>
-        </section>
-        
+        </div>
+
         <!-- Footer Info -->
         <footer class="footer-links animate-fade-in delay-3">
             <p>Twitch Channel Points Miner v2 &copy; 2026. Desenvolvido com <i class="fa-solid fa-heart" style="color: #9146FF;"></i> para andyoliveiraa.</p>
