@@ -5,7 +5,6 @@ from datetime import datetime
 from pathlib import Path
 from threading import Thread
 
-import pandas as pd
 from flask import Flask, Response, cli, render_template, request
 
 from TwitchChannelPointsMiner.classes.Settings import Settings
@@ -323,11 +322,10 @@ class AnalyticsServer(Thread):
             log_file_path = os.path.join(logs_path, f"{username}.log")
             try:
                 with open(log_file_path, "r", encoding="utf-8") as log_file:
-                    log_content = log_file.read()
+                    log_file.seek(last_received_index)
+                    new_log_entries = log_file.read()
+                    last_sent_log_index = last_received_index + len(new_log_entries.encode('utf-8'))
 
-                # Extract new log entries since the last received index
-                new_log_entries = log_content[last_received_index:]
-                last_sent_log_index = len(log_content)  # Update the last sent index
 
                 return Response(new_log_entries, status=200, mimetype="text/plain")
 
