@@ -1,5 +1,27 @@
 # -*- coding: utf-8 -*-
 
+import tracemalloc
+import threading
+import time
+
+tracemalloc.start()
+
+def monitor_memory():
+    while True:
+        current, peak = tracemalloc.get_traced_memory()
+        current_mb = current / 1024 / 1024
+        if current_mb > 400:
+            print(f"\n[ALERTA DE RAM] O Python está a usar {current_mb:.2f} MB!", flush=True)
+            snapshot = tracemalloc.take_snapshot()
+            top_stats = snapshot.statistics('lineno')
+            print("[ TOP 10 LINHAS A CONSUMIR MAIS MEMÓRIA ]", flush=True)
+            for stat in top_stats[:10]:
+                print(stat, flush=True)
+            print("=========================================\n", flush=True)
+        time.sleep(5)
+
+threading.Thread(target=monitor_memory, daemon=True).start()
+
 import logging
 import os
 from colorama import Fore
