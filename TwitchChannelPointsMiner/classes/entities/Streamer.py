@@ -256,7 +256,15 @@ class Streamer(object):
                 if key not in json_data:
                     json_data[key] = []
                 json_data[key].append(data)
-                json.dump(json_data, temp_file, indent=4)
+                
+                # Prune old data (keep only last 14 days)
+                fourteen_days_ago = (datetime.timestamp(now) - (14 * 24 * 60 * 60)) * 1000
+                if "series" in json_data:
+                    json_data["series"] = [d for d in json_data["series"] if d.get("x", 0) > fourteen_days_ago]
+                if "annotations" in json_data:
+                    json_data["annotations"] = [d for d in json_data["annotations"] if d.get("x", 0) > fourteen_days_ago]
+
+                json.dump(json_data, temp_file, separators=(',', ':'))
 
             # Replace the original file with the temporary file
             os.replace(temp_fname, fname)
