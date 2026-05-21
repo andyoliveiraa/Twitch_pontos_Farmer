@@ -112,33 +112,43 @@ def read_json(streamer, return_response=True):
 
 
 def get_challenge_points(streamer):
-    datas = read_json(streamer, return_response=False)
-    if "series" in datas and datas["series"]:
-        return datas["series"][-1]["y"]
-    return 0  # Default value when 'series' key is not found or empty
-
+    return 0
 
 def get_last_activity(streamer):
-    datas = read_json(streamer, return_response=False)
-    if "series" in datas and datas["series"]:
-        return datas["series"][-1]["x"]
-    return 0  # Default value when 'series' key is not found or empty
+    return 0
 
+def streamers():
+    result = []
+    for s in sorted(streamers_available()):
+        path = os.path.join(Settings.analytics_path, f"{s}.json" if not s.endswith(".json") else s)
+        points = 0
+        last_act = 0
+        if os.path.exists(path):
+            try:
+                with open(path, "r", encoding="utf-8") as f:
+                    data = json.load(f)
+                    if "series" in data and data["series"]:
+                        points = data["series"][-1].get("y", 0)
+                        last_act = data["series"][-1].get("x", 0)
+            except Exception:
+                pass
+        result.append({"name": s, "points": points, "last_activity": last_act})
+        
+    return Response(json.dumps(result), status=200, mimetype="application/json")
 
 def json_all():
-    return Response(
-        json.dumps(
-            [
-                {
-                    "name": streamer.strip(".json"),
-                    "data": read_json(streamer, return_response=False),
-                }
-                for streamer in streamers_available()
-            ]
-        ),
-        status=200,
-        mimetype="application/json",
-    )
+    parts = []
+    for streamer in streamers_available():
+        path = os.path.join(Settings.analytics_path, f"{streamer}.json" if not streamer.endswith(".json") else streamer)
+        if os.path.exists(path):
+            try:
+                with open(path, "r", encoding="utf-8") as f:
+                    content = f.read()
+                    if content.strip():
+                        parts.append(f'{{"name": "{streamer.replace(".json", "")}", "data": {content}}}')
+            except Exception:
+                pass
+    return Response("[" + ",".join(parts) + "]", status=200, mimetype="application/json")
 
 
 def index(refresh=5, days_ago=7):
@@ -148,19 +158,6 @@ def index(refresh=5, days_ago=7):
         daysAgo=days_ago,
     )
 
-
-def streamers():
-    return Response(
-        json.dumps(
-            [
-                {"name": s, "points": get_challenge_points(
-                    s), "last_activity": get_last_activity(s)}
-                for s in sorted(streamers_available())
-            ]
-        ),
-        status=200,
-        mimetype="application/json",
-    )
 
 
 def download_assets(assets_folder, required_files):
