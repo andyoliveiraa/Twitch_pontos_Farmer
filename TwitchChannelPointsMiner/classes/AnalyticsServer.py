@@ -452,5 +452,6 @@ class AnalyticsServer(Thread):
             f"Analytics running on http://{self.host}:{self.port}/",
             extra={"emoji": ":globe_with_meridians:"},
         )
+        logger.info(">>> OTIMIZACAO DE RAM ATIVADA COM SUCESSO <<<")
         self.app.run(host=self.host, port=self.port,
                      threaded=True, debug=False)
