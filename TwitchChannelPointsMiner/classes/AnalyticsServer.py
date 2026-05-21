@@ -125,11 +125,21 @@ def streamers():
         last_act = 0
         if os.path.exists(path):
             try:
-                with open(path, "r", encoding="utf-8") as f:
-                    data = json.load(f)
-                    if "series" in data and data["series"]:
-                        points = data["series"][-1].get("y", 0)
-                        last_act = data["series"][-1].get("x", 0)
+                # To avoid loading massive JSON into RAM just to get the last item,
+                # we read the last chunk of the file and extract the last "x" and "y" values using regex.
+                with open(path, "rb") as f:
+                    f.seek(0, 2)
+                    file_size = f.tell()
+                    chunk_size = min(4096, file_size)
+                    f.seek(file_size - chunk_size)
+                    chunk = f.read().decode("utf-8", errors="ignore")
+                    
+                    import re
+                    # Find all objects like {"x": 123, "y": 456, ...}
+                    matches = re.findall(r'\{[^{]*"x"\s*:\s*(\d+)[^{]*"y"\s*:\s*(\d+)[^}]*\}', chunk)
+                    if matches:
+                        last_act = int(matches[-1][0])
+                        points = int(matches[-1][1])
             except Exception:
                 pass
         result.append({"name": s, "points": points, "last_activity": last_act})
@@ -137,18 +147,29 @@ def streamers():
     return Response(json.dumps(result), status=200, mimetype="application/json")
 
 def json_all():
-    parts = []
-    for streamer in streamers_available():
-        path = os.path.join(Settings.analytics_path, f"{streamer}.json" if not streamer.endswith(".json") else streamer)
-        if os.path.exists(path):
-            try:
-                with open(path, "r", encoding="utf-8") as f:
-                    content = f.read()
-                    if content.strip():
-                        parts.append(f'{{"name": "{streamer.replace(".json", "")}", "data": {content}}}')
-            except Exception:
-                pass
-    return Response("[" + ",".join(parts) + "]", status=200, mimetype="application/json")
+    def generate():
+        yield "["
+        first = True
+        for streamer in streamers_available():
+            path = os.path.join(Settings.analytics_path, f"{streamer}.json" if not streamer.endswith(".json") else streamer)
+            if os.path.exists(path):
+                try:
+                    with open(path, "r", encoding="utf-8") as f:
+                        if not first:
+                            yield ","
+                        yield f'{{"name": "{streamer.replace(".json", "")}", "data": '
+                        while True:
+                            chunk = f.read(8192)
+                            if not chunk:
+                                break
+                            yield chunk
+                        yield "}"
+                        first = False
+                except Exception:
+                    pass
+        yield "]"
+
+    return Response(generate(), status=200, mimetype="application/json")
 
 
 def index(refresh=5, days_ago=7):
