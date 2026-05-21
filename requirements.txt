@@ -8,7 +8,7 @@ pre-commit
 colorama
 flask
 irc
-pandas
+
 pytz
 validators
 python-dotenv
