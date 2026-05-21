@@ -707,6 +707,12 @@ O **Nebula Miner** agora possui suporte nativo a dispositivos móveis através d
 
 O aplicativo móvel suporta a estética escura premium, um menu lateral deslizante (hamburger menu) para os streamers, barras de progresso, e roda em tela cheia (full-screen) sem as bordas do navegador.
 
+### Gerar APK para Android
+Se preferir distribuir um ficheiro `.apk` nativo:
+1. Acesse serviços web gratuitos como [PWABuilder](https://www.pwabuilder.com/) ou [WebIntoApp](https://www.webintoapp.com/).
+2. Insira a URL da sua dashboard hospedada na nuvem (ex: `https://pontos.discloud.app/`).
+3. O serviço reconhecerá automaticamente os ficheiros `manifest.json` e `sw.js` embutidos no Nebula Miner e compilará um `.apk` pronto para download e distribuição.
+
 ## Migrating from an old repository (the original one):
 If you already have a `twitch-cookies.pkl` and you don't want to log in again, please create a `cookies/` folder in the current directory and then copy the .pkl file with a new name `your-twitch-username.pkl`
 ```
