@@ -559,3 +559,32 @@ function millify(num) {
     if (num >= 1000) return (num / 1000).toFixed(1).replace(/\.0$/, '') + 'K';
     return num.toString();
 }
+
+// --- PWA & Mobile UI Logic ---
+
+// Register Service Worker for PWA installation
+if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/static/sw.js')
+            .then(registration => {
+                console.log('SW registered: ', registration);
+            }).catch(registrationError => {
+                console.log('SW registration failed: ', registrationError);
+            });
+    });
+}
+
+// Mobile Hamburger Menu Toggle
+$(document).ready(function() {
+    $('#mobile-menu-btn').click(function() {
+        $('.sidebar-panel').toggleClass('show');
+    });
+    
+    // Close sidebar when clicking outside on mobile
+    $(document).click(function(event) {
+        if (!$(event.target).closest('.sidebar-panel').length && 
+            !$(event.target).closest('#mobile-menu-btn').length) {
+            $('.sidebar-panel').removeClass('show');
+        }
+    });
+});

@@ -58,10 +58,11 @@ Read more about the channel points [here](https://help.twitch.tv/s/article/chann
     - [FilterCondition](#filtercondition)
         - [Example](#example)
 6. 📈 [Analytics](#analytics)
-7. 🍪 [Migrating from an old repository (the original one)](#migrating-from-an-old-repository-the-original-one)
-8. 🪟 [Windows](#windows)
-9. 📱 [Termux](#termux)
-10. ⚠️ [Disclaimer](#disclaimer)
+7. 📱 [Mobile App (PWA) - Nebula Miner](#mobile-app-pwa---nebula-miner)
+8. 🍪 [Migrating from an old repository (the original one)](#migrating-from-an-old-repository-the-original-one)
+9. 🪟 [Windows](#windows)
+10. 📱 [Termux](#termux)
+11. ⚠️ [Disclaimer](#disclaimer)
 
 
 ## Community
@@ -691,6 +692,20 @@ To use the V3 premium dashboard, simply ensure you have `enable_analytics=True` 
 Disabling Analytics significantly reduces memory consumption and saves some disk space by not creating and writing `/analytics/*.json`.
 
 Set this option to `True` if you need Analytics. Otherwise set this option to `False` (default value).
+
+For more information on the Analytics server, read the [`TwitchChannelPointsMiner/classes/AnalyticsServer.py`](./TwitchChannelPointsMiner/classes/AnalyticsServer.py) file.
+
+## Mobile App (PWA) - Nebula Miner
+
+O **Nebula Miner** agora possui suporte nativo a dispositivos móveis através de PWA (Progressive Web App). Isto significa que você pode instalar a Dashboard diretamente no seu telemóvel/celular e usá-la como uma aplicação nativa!
+
+**Como instalar:**
+1. Inicie o Minerador garantindo que a opção `host="0.0.0.0"` está configurada no `AnalyticsServer`, ou acesse via domínio caso esteja hospedado na nuvem (ex: `https://pontos.discloud.app/`).
+2. Abra o navegador no seu telemóvel (Chrome no Android, Safari no iOS) e acesse o endereço do servidor.
+3. Nas opções do navegador, escolha **"Adicionar à Tela Inicial"** ou **"Instalar Aplicativo"**.
+4. Um ícone do Nebula Miner será adicionado à sua tela inicial.
+
+O aplicativo móvel suporta a estética escura premium, um menu lateral deslizante (hamburger menu) para os streamers, barras de progresso, e roda em tela cheia (full-screen) sem as bordas do navegador.
 
 ## Migrating from an old repository (the original one):
 If you already have a `twitch-cookies.pkl` and you don't want to log in again, please create a `cookies/` folder in the current directory and then copy the .pkl file with a new name `your-twitch-username.pkl`

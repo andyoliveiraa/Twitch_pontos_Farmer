@@ -320,7 +320,7 @@ last_sent_log_index = 0
 class AnalyticsServer(Thread):
     def __init__(
         self,
-        host: str = "127.0.0.1",
+        host: str = "0.0.0.0",
         port: int = 5000,
         refresh: int = 5,
         days_ago: int = 7,

@@ -20,6 +20,14 @@
     <!-- Custom CSS Stylesheets -->
     <link href="{{url_for('static', filename='style.css')}}" rel="stylesheet" />
     <link href="{{url_for('static', filename='dark-theme.css')}}" rel="stylesheet" />
+    
+    <!-- PWA Meta Tags -->
+    <link rel="manifest" href="{{url_for('static', filename='manifest.json')}}">
+    <meta name="theme-color" content="#0c0a13">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Nebula Miner">
+    <link rel="apple-touch-icon" href="https://static.twitchcdn.net/assets/favicon-16-52e571ffea063af7a7f4.png">
 </head>
 <body>
     <!-- Background Gradient Grids -->
@@ -30,6 +38,9 @@
         <!-- Main Premium Header -->
         <header class="main-header glass-card animate-fade-in">
             <div class="header-brand">
+                <button class="mobile-menu-toggle" id="mobile-menu-btn" title="Menu">
+                    <i class="fa-solid fa-bars"></i>
+                </button>
                 <div class="logo-icon">
                     <i class="fa-brands fa-space-awesome"></i>
                 </div>
