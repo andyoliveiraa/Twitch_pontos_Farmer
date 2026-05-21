@@ -24,20 +24,7 @@ def streamers_available():
     ]
 
 
-def aggregate(df, freq="30Min"):
-    df_base_events = df[(df.z == "Watch") | (df.z == "Claim")]
-    df_other_events = df[(df.z != "Watch") & (df.z != "Claim")]
 
-    be = df_base_events.groupby(
-        [pd.Grouper(freq=freq, key="datetime"), "z"]).max()
-    be = be.reset_index()
-
-    oe = df_other_events.groupby(
-        [pd.Grouper(freq=freq, key="datetime"), "z"]).max()
-    oe = oe.reset_index()
-
-    result = pd.concat([be, oe])
-    return result
 
 
 def filter_datas(start_date, end_date, datas):
@@ -53,49 +40,37 @@ def filter_datas(start_date, end_date, datas):
         else datetime.now()
     ).replace(hour=23, minute=59, second=59).timestamp() * 1000
 
-    original_series = datas["series"]
+    original_series = datas.get("series", [])
 
-    if "series" in datas:
-        df = pd.DataFrame(datas["series"])
-        df["datetime"] = pd.to_datetime(df.x // 1000, unit="s")
-
-        df = df[(df.x >= start_date) & (df.x <= end_date)]
-
-        datas["series"] = (
-            df.drop(columns="datetime")
-            .sort_values(by=["x", "y"], ascending=True)
-            .to_dict("records")
-        )
+    if original_series:
+        filtered = [item for item in original_series if start_date <= item.get("x", 0) <= end_date]
+        filtered.sort(key=lambda item: (item.get("x", 0), item.get("y", 0)))
+        datas["series"] = filtered
     else:
         datas["series"] = []
 
     # If no data is found within the timeframe, that usually means the streamer hasn't streamed within that timeframe
     # We create a series that shows up as a straight line on the dashboard, with 'No Stream' as labels
-    if len(datas["series"]) == 0:
-        new_end_date = start_date
+    if len(datas["series"]) == 0 and original_series:
         new_start_date = 0
-        df = pd.DataFrame(original_series)
-        df["datetime"] = pd.to_datetime(df.x // 1000, unit="s")
+        new_end_date = start_date
+        
+        past_items = [item for item in original_series if new_start_date <= item.get("x", 0) <= new_end_date]
+        if past_items:
+            past_items.sort(key=lambda item: (item.get("x", 0), item.get("y", 0)))
+            last_balance = past_items[-1].get("y", 0)
+        else:
+            last_balance = 0
 
-        # Attempt to get the last known balance from before the provided timeframe
-        df = df[(df.x >= new_start_date) & (df.x <= new_end_date)]
-        last_balance = df.drop(columns="datetime").sort_values(
-            by=["x", "y"], ascending=True).to_dict("records")[-1]['y']
+        datas["series"] = [
+            {'x': start_date, 'y': last_balance, 'z': 'No Stream'},
+            {'x': end_date, 'y': last_balance, 'z': 'No Stream'}
+        ]
 
-        datas["series"] = [{'x': start_date, 'y': last_balance, 'z': 'No Stream'}, {
-            'x': end_date, 'y': last_balance, 'z': 'No Stream'}]
-
-    if "annotations" in datas:
-        df = pd.DataFrame(datas["annotations"])
-        df["datetime"] = pd.to_datetime(df.x // 1000, unit="s")
-
-        df = df[(df.x >= start_date) & (df.x <= end_date)]
-
-        datas["annotations"] = (
-            df.drop(columns="datetime")
-            .sort_values(by="x", ascending=True)
-            .to_dict("records")
-        )
+    if "annotations" in datas and datas["annotations"]:
+        filtered_annotations = [item for item in datas["annotations"] if start_date <= item.get("x", 0) <= end_date]
+        filtered_annotations.sort(key=lambda item: item.get("x", 0))
+        datas["annotations"] = filtered_annotations
     else:
         datas["annotations"] = []
 
