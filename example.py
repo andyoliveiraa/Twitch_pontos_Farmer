@@ -217,6 +217,6 @@ if os.path.exists(streamers_json_path):
 
 twitch_miner.mine(
     streamers_list,                     # Array de streamers carregado dinamicamente do JSON
-    followers=False,                    # Disable automatic download of all followers to save RAM
+    followers=True,                     # Enable automatic download of all followers
     followers_order=FollowersOrder.ASC  # Sort the followers list by follow date. ASC or DESC
 )
