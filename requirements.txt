@@ -12,3 +12,4 @@ irc
 pytz
 validators
 python-dotenv
+psutil

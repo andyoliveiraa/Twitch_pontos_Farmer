@@ -3,21 +3,33 @@
 import tracemalloc
 import threading
 import time
+import os
+import psutil
 
 tracemalloc.start()
 
 def monitor_memory():
+    process = psutil.Process(os.getpid())
     while True:
-        current, peak = tracemalloc.get_traced_memory()
-        current_mb = current / 1024 / 1024
-        if current_mb > 400:
-            print(f"\n[ALERTA DE RAM] O Python está a usar {current_mb:.2f} MB!", flush=True)
-            snapshot = tracemalloc.take_snapshot()
-            top_stats = snapshot.statistics('lineno')
-            print("[ TOP 10 LINHAS A CONSUMIR MAIS MEMÓRIA ]", flush=True)
-            for stat in top_stats[:10]:
-                print(stat, flush=True)
-            print("=========================================\n", flush=True)
+        try:
+            # Process RAM
+            rss_mb = process.memory_info().rss / 1024 / 1024
+            # Tracemalloc RAM
+            traced_mb = tracemalloc.get_traced_memory()[0] / 1024 / 1024
+            
+            print(f"[RAM MONITOR] Total usado pelo OS: {rss_mb:.2f} MB | Uso no código Python: {traced_mb:.2f} MB", flush=True)
+            
+            if rss_mb > 400:
+                print(f"\n[ALERTA DE RAM] PERIGO! O uso total de memória excedeu 400MB!", flush=True)
+                snapshot = tracemalloc.take_snapshot()
+                top_stats = snapshot.statistics('lineno')
+                print("[ TOP 10 LINHAS PYTHON A CONSUMIR MEMÓRIA ]", flush=True)
+                for stat in top_stats[:10]:
+                    print(stat, flush=True)
+                print("=========================================\n", flush=True)
+        except Exception as e:
+            print(f"Erro no monitor de RAM: {e}", flush=True)
+        
         time.sleep(5)
 
 threading.Thread(target=monitor_memory, daemon=True).start()
