@@ -133,7 +133,7 @@ twitch_miner = TwitchChannelPointsMiner(
         Priority.ORDER                          # - When we have all of the drops claimed and no watch-streak available, use the order priority (POINTS_ASCENDING, POINTS_DESCENDING)
     ],
     enable_analytics=True,                     # Disables Analytics if False. Disabling it significantly reduces memory consumption
-    disable_ssl_cert_verification=True,        # Set to True at your own risk and only to fix SSL: CERTIFICATE_VERIFY_FAILED error
+    disable_ssl_cert_verification=False,        # Set to True at your own risk and only to fix SSL: CERTIFICATE_VERIFY_FAILED error
     disable_at_in_nickname=False,               # Set to True if you want to check for your nickname mentions in the chat even without @ sign
     logger_settings=LoggerSettings(
         save=True,                              # If you want to save logs in a file (suggested)
@@ -158,7 +158,7 @@ twitch_miner = TwitchChannelPointsMiner(
         gotify=gotify_instance
     ),
     streamer_settings=StreamerSettings(
-        make_predictions=False,                  # If you want to Bet / Make prediction
+        make_predictions=True,                  # If you want to Bet / Make prediction
         follow_raid=True,                       # Follow raid to obtain more points
         claim_drops=True,                       # We can't filter rewards base on stream. Set to False for skip viewing counter increase and you will never obtain a drop reward from this script. Issue #21
         claim_moments=True,                     # If set to True, https://help.twitch.tv/s/article/moments will be claimed when available
