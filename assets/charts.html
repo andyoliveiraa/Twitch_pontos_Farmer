@@ -144,11 +144,21 @@
             <div class="content-panel">
                 <div class="panel-card glass-card">
                     <div class="panel-header">
-                        <div class="panel-title">
-                            <i class="fa-solid fa-chart-line"></i>
-                            <h3>Gráfico de Rendimento</h3>
+                        <div class="panel-title-group" style="display: flex; align-items: center; justify-content: space-between; width: 100%;">
+                            <div class="panel-title" style="margin-bottom: 0;">
+                                <i class="fa-solid fa-chart-line"></i>
+                                <h3>Gráfico de Rendimento</h3>
+                            </div>
+                            <div class="chart-type-tabs" style="display: flex; background: rgba(0,0,0,0.3); border-radius: 8px; padding: 4px;">
+                                <button id="tab-area" class="tab-btn active" style="padding: 6px 12px; border: none; background: #6200ee; color: white; border-radius: 6px; cursor: pointer; font-family: Outfit; font-weight: 500; font-size: 0.9rem; transition: 0.3s; margin-right: 4px;">
+                                    <i class="fa-solid fa-chart-area"></i> Evolução
+                                </button>
+                                <button id="tab-bar" class="tab-btn" style="padding: 6px 12px; border: none; background: transparent; color: #adadb8; border-radius: 6px; cursor: pointer; font-family: Outfit; font-weight: 500; font-size: 0.9rem; transition: 0.3s;">
+                                    <i class="fa-solid fa-chart-column"></i> Diário
+                                </button>
+                            </div>
                         </div>
-                        <div class="chart-filters">
+                        <div class="chart-filters" style="margin-top: 15px;">
                             <div class="date-inputs">
                                 <div class="date-field">
                                     <label>De:</label>

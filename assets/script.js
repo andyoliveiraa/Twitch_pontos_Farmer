@@ -97,6 +97,8 @@ var annotations = [];
 var streamersList = [];
 var sortBy = "Name ascending";
 var sortField = 'name';
+var chartMode = 'area'; // Can be 'area' or 'bar'
+var currentRawSeries = []; // Store raw series data so we can recalculate easily
 
 var startDate = new Date();
 startDate.setDate(startDate.getDate() - (daysAgo || 7));
@@ -199,6 +201,23 @@ $(document).ready(function () {
     $('#endDate').change(function() {
         endDate = new Date($(this).val());
         getStreamerData(currentStreamer);
+    });
+
+    // Chart type tabs
+    $('#tab-area').click(function() {
+        if (chartMode === 'area') return;
+        chartMode = 'area';
+        $('.tab-btn').removeClass('active').css({'background': 'transparent', 'color': '#adadb8'});
+        $(this).addClass('active').css({'background': '#6200ee', 'color': 'white'});
+        renderCurrentChartMode();
+    });
+    
+    $('#tab-bar').click(function() {
+        if (chartMode === 'bar') return;
+        chartMode = 'bar';
+        $('.tab-btn').removeClass('active').css({'background': 'transparent', 'color': '#adadb8'});
+        $(this).addClass('active').css({'background': '#6200ee', 'color': 'white'});
+        renderCurrentChartMode();
     });
 
     // Dropdown handler
@@ -389,16 +408,115 @@ function getStreamerData(streamer) {
             startDate: formatDate(startDate),
             endDate: formatDate(endDate)
         }, function (response) {
-            chart.updateSeries([{
-                name: streamer.replace(".json", ""),
-                data: response["series"]
-            }], true);
+            currentRawSeries = response["series"] || [];
+            
+            renderCurrentChartMode();
             
             clearAnnotations();
-            annotations = response["annotations"];
+            annotations = response["annotations"] || [];
             updateAnnotations();
             
             // Keep refreshing selected streamer data
+            setTimeout(function () {
+                getStreamerData(streamer);
+            }, 60000); // Refresh active chart every 1 minute
+        });
+    }
+}
+
+function renderCurrentChartMode() {
+    if (!currentStreamer) return;
+    var streamerName = currentStreamer.replace(".json", "");
+
+    if (chartMode === 'area') {
+        chart.updateOptions({
+            chart: { type: 'area' },
+            stroke: { curve: 'smooth', width: 3 },
+            dataLabels: { enabled: false },
+            tooltip: {
+                custom: ({ series, seriesIndex, dataPointIndex, w }) => {
+                    return (`<div class="apexcharts-custom-tooltip" style="padding: 10px; background: rgba(13, 13, 25, 0.95); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px;">
+                        <div style="font-weight: bold; font-family: Outfit; color: #a262ff; margin-bottom: 4px;">${w.globals.seriesNames[seriesIndex]}</div>
+                        <div style="font-size: 0.85rem; font-family: Outfit;">
+                            <span><b>Pontos</b>: ${series[seriesIndex][dataPointIndex]}</span><br>
+                            <span><b>Motivo</b>: ${w.globals.seriesZ[seriesIndex][dataPointIndex] ? w.globals.seriesZ[seriesIndex][dataPointIndex] : 'Atividade'}</span>
+                        </div>
+                    </div>`);
+                }
+            }
+        });
+        
+        chart.updateSeries([{
+            name: streamerName,
+            data: currentRawSeries
+        }], true);
+
+    } else if (chartMode === 'bar') {
+        // Calculate daily yield
+        var dailyData = {};
+        for (var i = 0; i < currentRawSeries.length; i++) {
+            var pt = currentRawSeries[i];
+            var dateObj = new Date(pt.x);
+            var dateKey = dateObj.getFullYear() + '-' + String(dateObj.getMonth() + 1).padStart(2, '0') + '-' + String(dateObj.getDate()).padStart(2, '0');
+            
+            if (!dailyData[dateKey]) {
+                dailyData[dateKey] = { first: pt.y, last: pt.y };
+            } else {
+                if (pt.y < dailyData[dateKey].first) dailyData[dateKey].first = pt.y; // In case of out-of-order
+                if (pt.y > dailyData[dateKey].last) dailyData[dateKey].last = pt.y;
+            }
+        }
+        
+        var barSeriesData = [];
+        var dates = Object.keys(dailyData).sort();
+        for (var j = 0; j < dates.length; j++) {
+            var dateKey = dates[j];
+            var yieldPts = dailyData[dateKey].last - dailyData[dateKey].first;
+            barSeriesData.push({
+                x: new Date(dateKey).getTime(),
+                y: yieldPts > 0 ? yieldPts : 0
+            });
+        }
+        
+        chart.updateOptions({
+            chart: { type: 'bar' },
+            stroke: { width: 0 },
+            dataLabels: { 
+                enabled: true,
+                formatter: function (val) {
+                    return val.toLocaleString();
+                },
+                style: {
+                    fontFamily: 'Outfit, sans-serif',
+                    fontSize: '12px'
+                }
+            },
+            tooltip: {
+                custom: ({ series, seriesIndex, dataPointIndex, w }) => {
+                    var val = series[seriesIndex][dataPointIndex];
+                    var dateStr = new Date(w.globals.seriesX[seriesIndex][dataPointIndex]).toLocaleDateString();
+                    return (`<div class="apexcharts-custom-tooltip" style="padding: 10px; background: rgba(13, 13, 25, 0.95); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px;">
+                        <div style="font-weight: bold; font-family: Outfit; color: #a262ff; margin-bottom: 4px;">${streamerName} - Rendimento</div>
+                        <div style="font-size: 0.85rem; font-family: Outfit;">
+                            <span><b>Data</b>: ${dateStr}</span><br>
+                            <span><b>Farmado</b>: ${val.toLocaleString()} pts</span>
+                        </div>
+                    </div>`);
+                }
+            }
+        });
+        
+        chart.updateSeries([{
+            name: streamerName,
+            data: barSeriesData
+        }], true);
+    }
+}
+
+            clearAnnotations();
+            annotations = response["annotations"] || [];
+            updateAnnotations();
+            
             setTimeout(function () {
                 getStreamerData(streamer);
             }, 60000); // Refresh active chart every 1 minute
