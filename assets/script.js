@@ -527,16 +527,7 @@ function renderCurrentChartMode() {
     }
 }
 
-            clearAnnotations();
-            annotations = response["annotations"] || [];
-            updateAnnotations();
-            
-            setTimeout(function () {
-                getStreamerData(streamer);
-            }, 60000); // Refresh active chart every 1 minute
-        });
-    }
-}
+
 
 function sortStreamers() {
     streamersList = streamersList.sort((a, b) => {
