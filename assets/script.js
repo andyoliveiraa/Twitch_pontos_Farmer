@@ -433,6 +433,16 @@ function renderCurrentChartMode() {
             chart: { type: 'area' },
             stroke: { curve: 'smooth', width: 3 },
             dataLabels: { enabled: false },
+            fill: {
+                type: 'gradient',
+                gradient: {
+                    shadeIntensity: 1,
+                    inverseColors: false,
+                    opacityFrom: 0.4,
+                    opacityTo: 0.05,
+                    stops: [0, 90, 100]
+                }
+            },
             tooltip: {
                 custom: ({ series, seriesIndex, dataPointIndex, w }) => {
                     return (`<div class="apexcharts-custom-tooltip" style="padding: 10px; background: rgba(13, 13, 25, 0.95); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px;">
@@ -462,8 +472,8 @@ function renderCurrentChartMode() {
             if (!dailyData[dateKey]) {
                 dailyData[dateKey] = { first: pt.y, last: pt.y };
             } else {
-                if (pt.y < dailyData[dateKey].first) dailyData[dateKey].first = pt.y; // In case of out-of-order
-                if (pt.y > dailyData[dateKey].last) dailyData[dateKey].last = pt.y;
+                // Since data is temporally ordered, the last seen point for a day is the temporal last.
+                dailyData[dateKey].last = pt.y;
             }
         }
         
@@ -474,13 +484,17 @@ function renderCurrentChartMode() {
             var yieldPts = dailyData[dateKey].last - dailyData[dateKey].first;
             barSeriesData.push({
                 x: new Date(dateKey).getTime(),
-                y: yieldPts > 0 ? yieldPts : 0
+                y: yieldPts
             });
         }
         
         chart.updateOptions({
             chart: { type: 'bar' },
             stroke: { width: 0 },
+            fill: {
+                type: 'solid',
+                opacity: 1
+            },
             dataLabels: { 
                 enabled: true,
                 formatter: function (val) {
