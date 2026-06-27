@@ -1,21 +1,21 @@
-/* Premium Dark Mode Override Variables */
+/* Premium Black Out & Neon Purple Theme Overrides */
 :root {
-    --bg-main: #06060c;
-    --bg-glow-1: rgba(145, 70, 255, 0.15);
+    --bg-main: #000000;
+    --bg-glow-1: rgba(168, 85, 247, 0.18);
     --bg-glow-2: rgba(0, 240, 255, 0.1);
     
-    --glass-bg: rgba(12, 12, 24, 0.65);
-    --glass-card-bg: rgba(20, 20, 35, 0.4);
-    --glass-border: rgba(255, 255, 255, 0.08);
-    --glass-shadow: rgba(0, 0, 0, 0.45);
+    --glass-bg: rgba(3, 3, 5, 0.97);
+    --glass-card-bg: rgba(6, 6, 8, 0.75);
+    --glass-border: rgba(168, 85, 247, 0.26);
+    --glass-shadow: rgba(0, 0, 0, 0.98);
     
-    --twitch-purple: #9146ff;
-    --twitch-purple-hover: #a262ff;
-    --twitch-purple-glow: rgba(145, 70, 255, 0.3);
+    --twitch-purple: #a855f7;
+    --twitch-purple-hover: #c084fc;
+    --twitch-purple-glow: rgba(168, 85, 247, 0.5);
     
-    --text-primary: #f5f5fa;
-    --text-secondary: #adadb8;
-    --text-muted: #656573;
+    --text-primary: #ffffff;
+    --text-secondary: #a0a0b2;
+    --text-muted: #525266;
 }
 
 body {
@@ -27,28 +27,29 @@ body {
 .glass-card {
     background: var(--glass-bg) !important;
     border-color: var(--glass-border) !important;
-    box-shadow: 0 12px 30px var(--glass-shadow) !important;
+    box-shadow: 0 12px 40px var(--glass-shadow) !important;
 }
 
 .glass-card:hover {
-    border-color: rgba(145, 70, 255, 0.22) !important;
+    border-color: rgba(168, 85, 247, 0.45) !important;
+    box-shadow: 0 16px 48px rgba(168, 85, 247, 0.2) !important;
 }
 
 /* Dark mode inputs and dropdowns */
 .date-field input, .dropdown-trigger button, .search-box input, .input-with-icon input {
-    background: rgba(255, 255, 255, 0.04) !important;
+    background: rgba(0, 0, 0, 0.6) !important;
     border-color: var(--glass-border) !important;
     color: var(--text-primary) !important;
 }
 
 .date-field input:focus, .dropdown-trigger button:hover, .search-box input:focus, .input-with-icon input:focus {
     border-color: var(--twitch-purple) !important;
-    background: rgba(255, 255, 255, 0.08) !important;
+    background: rgba(168, 85, 247, 0.08) !important;
 }
 
 /* Scrollbar override */
 ::-webkit-scrollbar-thumb {
-    background: rgba(255, 255, 255, 0.12) !important;
+    background: rgba(168, 85, 247, 0.25) !important;
 }
 
 ::-webkit-scrollbar-thumb:hover {

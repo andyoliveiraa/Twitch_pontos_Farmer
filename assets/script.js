@@ -34,8 +34,7 @@ var options = {
             fontWeight: '600',
             fontFamily: 'Outfit, sans-serif'
         }
-    },
-    colors: ["#b829ff"],
+    colors: ["#a855f7"],
     fill: {
         type: 'gradient',
         gradient: {
@@ -128,11 +127,10 @@ function calculatePtsHr(currentPoints, uptimeSeconds) {
 function toggleDarkMode() {
     var darkMode = $('#dark-mode').prop("checked");
     $("link[href*='dark-theme.css']").prop("disabled", !darkMode);
-    
     chart.updateOptions({
-        colors: darkMode ? ["#A262FF"] : ['#6200EE'],
+        colors: darkMode ? ["#a855f7"] : ['#9146ff'],
         chart: {
-            foreColor: darkMode ? "#fff" : '#373d3f'
+            foreColor: darkMode ? "#ffffff" : '#adadb8'
         },
         tooltip: {
             theme: darkMode ? "dark" : "light"
@@ -158,9 +156,13 @@ $(document).ready(function () {
     if (localStorage.getItem("sort-by") !== null) {
         sortBy = localStorage.getItem("sort-by");
     }
+    if (localStorage.getItem("vps-compact") !== null) {
+        $('#vps-compact').prop("checked", localStorage.getItem("vps-compact") === "true");
+    }
     
-    // Apply initial theme/annotations settings
+    // Apply initial theme/annotations/compact settings
     toggleDarkMode();
+    applyVPSCompact();
     
     // Sort dropdown select
     $('#sorting-by').text(sortBy);
@@ -169,7 +171,7 @@ $(document).ready(function () {
     else sortField = 'name';
 
     // 2. Poll Status & Fetch Lists
-    getMinerStatus();
+    getMinerStatus(true);
     getStreamers();
     getLog();
     
@@ -179,6 +181,11 @@ $(document).ready(function () {
     $('#dark-mode').change(function () {
         localStorage.setItem("dark-mode", this.checked);
         toggleDarkMode();
+    });
+    
+    $('#vps-compact').change(function () {
+        localStorage.setItem("vps-compact", this.checked);
+        applyVPSCompact();
     });
     
     $('#annotations').change(function () {
@@ -271,8 +278,32 @@ $(document).ready(function () {
     });
 });
 
+// Toggle and apply the VPS compact mode stylesheet overrides
+function applyVPSCompact() {
+    var isCompact = $('#vps-compact').prop("checked");
+    if (isCompact) {
+        $('body').addClass('vps-compact-active');
+    } else {
+        $('body').removeClass('vps-compact-active');
+    }
+    if (chart && typeof chart.updateOptions === 'function') {
+        chart.updateOptions({
+            chart: {
+                height: isCompact ? 350 : 480
+            }
+        });
+    }
+}
+
+var lastStatusPollTime = 0;
 // Fetch general miner status and update stats row
-function getMinerStatus() {
+function getMinerStatus(force = false) {
+    var now = Date.now();
+    var threshold = document.hidden ? 10000 : 2500;
+    if (!force && (now - lastStatusPollTime < threshold)) {
+        return;
+    }
+    lastStatusPollTime = now;
     $.getJSON('/api/miner_status', function(data) {
         if (!data.running) {
             $('#miner-state-text').text("Inativo / Offline");
@@ -556,11 +587,13 @@ function getLog() {
             }
             
             if (autoUpdateLog) {
-                setTimeout(getLog, 500); // Fetch log entries every 500ms
+                var nextDelay = document.hidden ? 10000 : 500;
+                setTimeout(getLog, nextDelay); // Fetch log entries (throttled if hidden)
             }
         }).fail(function() {
             if (autoUpdateLog) {
-                setTimeout(getLog, 3000);
+                var nextDelay = document.hidden ? 15000 : 3000;
+                setTimeout(getLog, nextDelay);
             }
         });
     }
