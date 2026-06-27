@@ -413,7 +413,32 @@ body {
     color: var(--text-primary);
     font-size: 1.5rem;
     cursor: pointer;
-    padding: 0.5rem;
+    width: 44px;
+    height: 44px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Sidebar Overlay */
+.sidebar-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.65);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    z-index: 9998;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.sidebar-overlay.show {
+    opacity: 1;
+    pointer-events: auto;
 }
 
 @media (max-width: 1024px) {
@@ -422,24 +447,31 @@ body {
     }
     
     .mobile-menu-toggle {
-        display: block;
+        display: flex;
     }
     
     .sidebar-panel {
         position: fixed;
         top: 0;
-        left: -320px;
+        left: 0;
         width: 300px;
         height: 100vh;
         z-index: 9999;
-        background: var(--bg-main);
-        transition: left 0.3s ease;
-        box-shadow: 10px 0 30px rgba(0,0,0,0.8);
+        background: var(--glass-bg);
+        border-right: 1px solid var(--glass-border);
+        box-shadow: 20px 0 40px rgba(0, 0, 0, 0.85);
         overflow-y: auto;
+        will-change: transform, opacity;
+        transform: translate3d(-110%, 0, 0) rotateY(-15deg);
+        transform-origin: left center;
+        perspective: 1000px;
+        opacity: 0;
+        transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease;
     }
     
     .sidebar-panel.show {
-        left: 0;
+        transform: translate3d(0, 0, 0) rotateY(0deg);
+        opacity: 1;
     }
     
     .header-search {
@@ -458,10 +490,23 @@ body {
     .main-header {
         flex-direction: column;
         align-items: flex-start;
+        padding: 1rem 1.25rem;
     }
     .header-actions {
         width: 100%;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 0.75rem;
+    }
+    .quick-controls {
+        flex-wrap: wrap;
+        gap: 0.75rem;
         justify-content: space-between;
+    }
+    .toggle-control {
+        min-height: 44px;
+        flex: 1 1 40%;
+        justify-content: flex-start;
     }
 }
 
@@ -1277,4 +1322,204 @@ body.vps-compact-active .streamers-config-table td {
 body.vps-compact-active .footer-links {
     padding: 0.5rem 0;
     font-size: 0.75rem;
+}
+
+/* ==========================================================================
+   Mobile Responsiveness Additions (Smartphones & Tablets <= 768px)
+   ========================================================================== */
+@media (max-width: 768px) {
+    /* 1. Mobile Interactive Hit Targets (min 44px) */
+    .btn, 
+    .control-btn, 
+    .level-btn, 
+    .dropdown-trigger button,
+    .tab-btn,
+    .date-field input,
+    .input-with-icon input {
+        min-height: 44px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.95rem;
+    }
+
+    .level-btn {
+        padding: 0.5rem 0.8rem;
+    }
+
+    .action-icon-btn {
+        width: 44px;
+        height: 44px;
+        font-size: 1.1rem;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        background: rgba(255, 59, 48, 0.05);
+        border: 1px solid rgba(255, 59, 48, 0.15);
+        color: var(--color-red);
+        border-radius: 8px;
+    }
+    
+    .checkbox-control {
+        min-height: 44px;
+        padding: 0.5rem 0;
+        display: inline-flex;
+        align-items: center;
+    }
+    
+    .checkbox-control input {
+        width: 18px;
+        height: 18px;
+        margin-right: 0.5rem;
+    }
+
+    /* 2. Responsive Auto-Stacked Configuration Table */
+    .streamers-config-table, 
+    .streamers-config-table thead, 
+    .streamers-config-table tbody, 
+    .streamers-config-table th, 
+    .streamers-config-table td, 
+    .streamers-config-table tr {
+        display: block;
+    }
+    
+    .streamers-config-table thead {
+        display: none; /* Hide column headers visually */
+    }
+    
+    .streamers-config-table tr {
+        margin-bottom: 1.25rem;
+        background: rgba(255, 255, 255, 0.02);
+        border: 1px solid var(--glass-border);
+        border-radius: 12px;
+        padding: 0.5rem;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+    }
+    
+    .streamers-config-table td {
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        padding: 0.75rem 1rem !important;
+        text-align: right;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        min-height: 44px;
+    }
+    
+    .streamers-config-table td:last-child {
+        border-bottom: none;
+        justify-content: space-between; /* Keeps the label layout standard */
+    }
+    
+    .streamers-config-table td::before {
+        content: attr(data-label);
+        font-weight: 600;
+        color: var(--text-secondary);
+        text-align: left;
+        margin-right: auto;
+    }
+
+    .streamers-config-table-container {
+        max-height: none; /* Allow natural flow on mobile */
+        overflow-y: visible;
+    }
+
+    /* 3. Log Console Toolbar Optimization */
+    .log-toolbar {
+        flex-direction: column;
+        align-items: stretch;
+        width: 100%;
+        gap: 0.75rem;
+    }
+    
+    .log-toolbar .search-box {
+        width: 100% !important;
+    }
+    
+    .log-level-filters {
+        width: 100%;
+        display: flex;
+        background: rgba(255, 255, 255, 0.02);
+    }
+    
+    .log-level-filters .level-btn {
+        flex: 1;
+        text-align: center;
+        border-radius: 6px;
+        padding: 0.5rem 0.25rem;
+    }
+    
+    .log-actions {
+        display: flex;
+        gap: 0.5rem;
+        width: 100%;
+    }
+    
+    .log-actions button {
+        flex: 1;
+        justify-content: center;
+    }
+
+    /* 4. Chart Filters Layout Adjustment */
+    .chart-filters {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 0.75rem;
+        width: 100%;
+    }
+
+    .date-inputs {
+        flex-direction: column;
+        align-items: stretch;
+        width: 100%;
+        gap: 0.5rem;
+    }
+
+    .date-field {
+        justify-content: space-between;
+        width: 100%;
+    }
+
+    .date-field input {
+        width: 70%;
+    }
+
+    .dropdown {
+        width: 100%;
+    }
+
+    .dropdown-trigger, .dropdown-trigger button {
+        width: 100%;
+    }
+
+    .dropdown-trigger button {
+        justify-content: space-between;
+    }
+
+    .dropdown-menu {
+        width: 100%;
+        position: relative;
+        top: 0;
+        box-shadow: none;
+        margin-top: 0.5rem;
+    }
+
+    /* 5. General Layout Adjustments */
+    .dashboard-wrapper {
+        padding: 0.75rem;
+        gap: 0.75rem;
+    }
+
+    .stat-card {
+        padding: 1rem;
+    }
+
+    .stat-value {
+        font-size: 1.25rem;
+    }
+
+    #log-content {
+        height: 300px;
+        font-size: 0.8rem !important;
+    }
 }

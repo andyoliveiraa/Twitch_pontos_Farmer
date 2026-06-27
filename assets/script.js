@@ -730,17 +730,205 @@ if ('serviceWorker' in navigator) {
     });
 }
 
-// Mobile Hamburger Menu Toggle
+// Mobile Hamburger Menu Toggle & Overlay Interaction
 $(document).ready(function() {
-    $('#mobile-menu-btn').click(function() {
-        $('.sidebar-panel').toggleClass('show');
+    $('#mobile-menu-btn').click(function(e) {
+        e.stopPropagation();
+        $('.sidebar-panel').addClass('show');
+        $('#sidebar-overlay').addClass('show');
     });
     
-    // Close sidebar when clicking outside on mobile
-    $(document).click(function(event) {
-        if (!$(event.target).closest('.sidebar-panel').length && 
-            !$(event.target).closest('#mobile-menu-btn').length) {
+    $('#sidebar-overlay').click(function() {
+        $('.sidebar-panel').removeClass('show');
+        $('#sidebar-overlay').removeClass('show');
+    });
+    
+    // Fechar menu móvel ao clicar em um streamer
+    $(document).on('click', '.streamer-card', function() {
+        if ($(window).width() <= 1024) {
             $('.sidebar-panel').removeClass('show');
+            $('#sidebar-overlay').removeClass('show');
         }
     });
+    
+    // Lógica do formulário de adicionar streamer
+    $("#add-streamer-form").submit(function(e) {
+        e.preventDefault();
+        var username = $("#new-streamer-username").val().trim();
+        if (!username) return;
+        
+        // Verificar duplicados
+        var exists = streamersConfigData.some(s => s.username.toLowerCase() === username.toLowerCase());
+        if (exists) {
+            alert("Este streamer já está configurado!");
+            return;
+        }
+        
+        var newStreamer = {
+            username: username,
+            make_predictions: $("#add-predictions").prop("checked"),
+            follow_raid: $("#add-raid").prop("checked"),
+            claim_drops: $("#add-drops").prop("checked"),
+            watch_streak: $("#add-streak").prop("checked"),
+            is_online: false,
+            points: 0,
+            running: false
+        };
+        
+        streamersConfigData.push(newStreamer);
+        $("#new-streamer-username").val("");
+        renderStreamersConfig();
+    });
+
+    // Lógica do salvamento de configurações
+    $("#save-streamers-btn").click(function() {
+        var btn = $(this);
+        var originalHtml = btn.html();
+        
+        btn.prop("disabled", true).html('<i class="fa-solid fa-circle-notch fa-spin"></i> Salvando...');
+        
+        // Remove campos dinâmicos antes de enviar ao backend
+        var dataToSend = streamersConfigData.map(s => {
+            return {
+                username: s.username,
+                make_predictions: s.make_predictions,
+                follow_raid: s.follow_raid,
+                claim_drops: s.claim_drops,
+                watch_streak: s.watch_streak
+            };
+        });
+        
+        $.ajax({
+            url: '/api/streamers_config',
+            type: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify(dataToSend),
+            success: function(response) {
+                btn.html('<i class="fa-solid fa-check"></i> Salvo com sucesso!');
+                setTimeout(function() {
+                    btn.prop("disabled", false).html(originalHtml);
+                    getStreamers();
+                    getStreamersConfig();
+                }, 2000);
+            },
+            error: function(xhr, status, error) {
+                alert("Erro ao salvar configurações: " + error);
+                btn.prop("disabled", false).html(originalHtml);
+            }
+        });
+    });
+
+    // Carregar configurações de streamers inicialmente
+    getStreamersConfig();
 });
+
+// --- Streamers Configuration Data Management ---
+var streamersConfigData = [];
+
+function getStreamersConfig() {
+    $.getJSON('/api/streamers_config', function(data) {
+        if (data && !data.error) {
+            streamersConfigData = data;
+            renderStreamersConfig();
+        } else {
+            console.error("Erro ao obter configurações:", data.error);
+            $("#streamers-config-tbody").html('<tr><td colspan="8" class="loading-placeholder" style="color: var(--color-red);">Erro ao carregar configurações.</td></tr>');
+        }
+    }).fail(function() {
+        $("#streamers-config-tbody").html('<tr><td colspan="8" class="loading-placeholder" style="color: var(--color-red);">Erro de comunicação com o servidor.</td></tr>');
+    });
+}
+
+function renderStreamersConfig() {
+    var tbody = $("#streamers-config-tbody");
+    tbody.empty();
+    
+    if (streamersConfigData.length === 0) {
+        tbody.append('<tr><td colspan="8" class="loading-placeholder">Nenhum streamer configurado. Adicione um acima!</td></tr>');
+        return;
+    }
+    
+    streamersConfigData.forEach(function(streamer, index) {
+        var displayname = streamer.username;
+        var statusBadge = streamer.is_online 
+            ? '<span class="badge-status online">Online</span>' 
+            : '<span class="badge-status offline">Offline</span>';
+        
+        var pointsText = streamer.running 
+            ? `<span class="points-text emerald">${millify(streamer.points)}</span>` 
+            : '<span class="points-text text-muted">-</span>';
+
+        var trHtml = `
+        <tr>
+            <td data-label="Streamer" class="streamer-row-name">${displayname}</td>
+            <td data-label="Status">${statusBadge}</td>
+            <td data-label="Pontos">${pointsText}</td>
+            <td data-label="Predições">
+                <label class="checkbox-control" style="justify-content: flex-end; min-height: auto; padding: 0;">
+                    <input type="checkbox" class="config-checkbox" data-index="${index}" data-prop="make_predictions" ${streamer.make_predictions ? 'checked' : ''}>
+                </label>
+            </td>
+            <td data-label="Raids">
+                <label class="checkbox-control" style="justify-content: flex-end; min-height: auto; padding: 0;">
+                    <input type="checkbox" class="config-checkbox" data-index="${index}" data-prop="follow_raid" ${streamer.follow_raid ? 'checked' : ''}>
+                </label>
+            </td>
+            <td data-label="Drops">
+                <label class="checkbox-control" style="justify-content: flex-end; min-height: auto; padding: 0;">
+                    <input type="checkbox" class="config-checkbox" data-index="${index}" data-prop="claim_drops" ${streamer.claim_drops ? 'checked' : ''}>
+                </label>
+            </td>
+            <td data-label="Streak">
+                <label class="checkbox-control" style="justify-content: flex-end; min-height: auto; padding: 0;">
+                    <input type="checkbox" class="config-checkbox" data-index="${index}" data-prop="watch_streak" ${streamer.watch_streak ? 'checked' : ''}>
+                </label>
+            </td>
+            <td data-label="Remover" style="text-align: center; justify-content: center;">
+                <button class="action-icon-btn remove-streamer-btn" data-index="${index}" title="Excluir Streamer">
+                    <i class="fa-solid fa-trash-can"></i>
+                </button>
+            </td>
+        </tr>`;
+        
+        tbody.append(trHtml);
+    });
+    
+    // Atualizar estado em tempo real no array local
+    $('.config-checkbox').change(function() {
+        var idx = $(this).data('index');
+        var prop = $(this).data('prop');
+        streamersConfigData[idx][prop] = this.checked;
+    });
+    
+    // Remover streamer da lista local
+    $('.remove-streamer-btn').click(function() {
+        var idx = $(this).data('index');
+        var username = streamersConfigData[idx].username;
+        if (confirm(`Deseja realmente remover ${username}? As alterações só serão salvas ao clicar em "Salvar Alterações".`)) {
+            streamersConfigData.splice(idx, 1);
+            renderStreamersConfig();
+        }
+    });
+}
+
+// Otimização de altura do gráfico no Resize (Debounce)
+var resizeTimer;
+$(window).resize(function() {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(function() {
+        if (chart && typeof chart.updateOptions === 'function') {
+            var isCompact = $('#vps-compact').prop("checked");
+            var windowWidth = $(window).width();
+            var newHeight = isCompact ? 280 : 350;
+            if (windowWidth > 768) {
+                newHeight = isCompact ? 350 : 480;
+            }
+            chart.updateOptions({
+                chart: {
+                    height: newHeight
+                }
+            });
+        }
+    }, 250);
+});
+

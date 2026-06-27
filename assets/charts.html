@@ -32,6 +32,7 @@
     <!-- Background Gradient Grids -->
     <div class="bg-glow bg-glow-1"></div>
     <div class="bg-glow bg-glow-2"></div>
+    <div class="sidebar-overlay" id="sidebar-overlay"></div>
 
     <div class="dashboard-wrapper">
         <!-- Main Premium Header -->
@@ -201,6 +202,72 @@
                         <div class="chart-canvas-container">
                             <div id="chart"></div>
                         </div>
+                    </div>
+                </div>
+
+                <!-- Streamers Configuration Panel -->
+                <div class="panel-card glass-card config-panel" id="config-panel" style="margin-top: 1.5rem;">
+                    <div class="panel-header">
+                        <div class="panel-title">
+                            <i class="fa-solid fa-sliders color-purple"></i>
+                            <h3>Configuração de Streamers</h3>
+                        </div>
+                    </div>
+                    <div class="add-streamer-box">
+                        <h4>Adicionar Novo Streamer</h4>
+                        <form id="add-streamer-form" class="form-row">
+                            <div class="input-with-icon">
+                                <i class="fa-brands fa-twitch"></i>
+                                <input type="text" id="new-streamer-username" placeholder="Nome do streamer..." required>
+                            </div>
+                            <button type="submit" class="btn btn-primary" id="add-streamer-btn">
+                                <i class="fa-solid fa-plus"></i> Adicionar
+                            </button>
+                            <div class="form-checkboxes">
+                                <label class="checkbox-control">
+                                    <input type="checkbox" id="add-predictions" checked>
+                                    <span>Predições</span>
+                                </label>
+                                <label class="checkbox-control">
+                                    <input type="checkbox" id="add-raid" checked>
+                                    <span>Raids</span>
+                                </label>
+                                <label class="checkbox-control">
+                                    <input type="checkbox" id="add-drops" checked>
+                                    <span>Drops</span>
+                                </label>
+                                <label class="checkbox-control">
+                                    <input type="checkbox" id="add-streak" checked>
+                                    <span>Streak</span>
+                                </label>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="streamers-config-table-container">
+                        <table class="streamers-config-table">
+                            <thead>
+                                <tr>
+                                    <th>Streamer</th>
+                                    <th>Status</th>
+                                    <th>Pontos</th>
+                                    <th>Predições</th>
+                                    <th>Raids</th>
+                                    <th>Drops</th>
+                                    <th>Streak</th>
+                                    <th style="text-align: center;">Remover</th>
+                                </tr>
+                            </thead>
+                            <tbody id="streamers-config-tbody">
+                                <tr>
+                                    <td colspan="8" class="loading-placeholder">Carregando configurações dos streamers...</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="save-actions">
+                        <button id="save-streamers-btn" class="btn btn-accent">
+                            <i class="fa-solid fa-floppy-disk"></i> Salvar Alterações
+                        </button>
                     </div>
                 </div>
 

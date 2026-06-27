@@ -5,7 +5,7 @@ from datetime import datetime
 from pathlib import Path
 from threading import Thread
 
-from flask import Flask, Response, cli, render_template, request
+from flask import Flask, Response, cli, render_template, request, url_for
 
 from TwitchChannelPointsMiner.classes.Settings import Settings
 from TwitchChannelPointsMiner.utils import download_file
@@ -438,6 +438,20 @@ class AnalyticsServer(Thread):
             template_folder=os.path.join(Path().absolute(), "assets"),
             static_folder=os.path.join(Path().absolute(), "assets"),
         )
+
+        # Cache busting para ficheiros estáticos (evita ter que limpar a cache no browser)
+        @self.app.context_processor
+        def override_url_for():
+            return dict(url_for=dated_url_for)
+
+        def dated_url_for(endpoint, **values):
+            if endpoint == "static":
+                filename = values.get("filename", None)
+                if filename:
+                    file_path = os.path.join(self.app.static_folder, filename)
+                    if os.path.exists(file_path):
+                        values["v"] = int(os.stat(file_path).st_mtime)
+            return url_for(endpoint, **values)
         self.app.add_url_rule(
             "/",
             "index",
