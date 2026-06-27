@@ -1,29 +1,18 @@
-# Twitch Channel Points Miner - V3 (Premium Dashboard Edition) 🚀
+# 🔮 Twitch Channel Points Miner - V3 (Nebula Cyber Edition) 🚀
 
-<p align="center">
-<a href="https://github.com/andyoliveiraa/Twitch_pontos_Farmer/releases"><img alt="Latest Version" src="https://img.shields.io/github/v/release/andyoliveiraa/Twitch_pontos_Farmer?style=flat&color=white&logo=github&logoColor=white"></a>
-<a href="https://github.com/andyoliveiraa/Twitch_pontos_Farmer/stargazers"><img alt="GitHub Repo stars" src="https://img.shields.io/github/stars/andyoliveiraa/Twitch_pontos_Farmer?style=flat&color=limegreen&logo=github&logoColor=white"></a>
-<a href='https://github.com/MShawon/github-clone-count-badge'><img alt='GitHub Traffic' src='https://img.shields.io/badge/dynamic/json?style=flat&color=blue&label=views&query=count&url=https://gist.githubusercontent.com/rdavydov/ad9a3c6a8d9c322f9a6b62781ea94a93/raw/traffic.json&logo=github&logoColor=white'></a>
-<a href='https://github.com/MShawon/github-clone-count-badge'><img alt='GitHub Clones' src='https://img.shields.io/badge/dynamic/json?style=flat&color=purple&label=clones&query=count&url=https://gist.githubusercontent.com/rdavydov/fed04b31a250ad522d9ea6547ce87f95/raw/clone.json&logo=github&logoColor=white'></a>
-<a href="https://github.com/andyoliveiraa/Twitch_pontos_Farmer/blob/master/LICENSE"><img alt="License" src="https://img.shields.io/github/license/andyoliveiraa/Twitch_pontos_Farmer?style=flat&color=black&logo=unlicense&logoColor=white"></a>
-<a href="https://github.com/andyoliveiraa/Twitch_pontos_Farmer"><img alt="GitHub last commit" src="https://img.shields.io/github/last-commit/andyoliveiraa/Twitch_pontos_Farmer?style=flat&color=lightyellow&logo=github&logoColor=white"></a>
-</p>
+This fork brings a Cyber-Premium visual experience and optimized features specifically designed for VPS environments (Windows 10) and mobile devices.
 
-<p align="center">
-<a href="https://hub.docker.com/r/rdavidoff/twitch-channel-points-miner-v2"><img alt="Docker Version" src="https://img.shields.io/docker/v/rdavidoff/twitch-channel-points-miner-v2?style=flat&color=white&logo=docker&logoColor=white&label=release"></a>
-<a href="https://hub.docker.com/r/rdavidoff/twitch-channel-points-miner-v2"><img alt="Docker Stars" src="https://img.shields.io/docker/stars/rdavidoff/twitch-channel-points-miner-v2?style=flat&color=limegreen&logo=docker&logoColor=white&label=stars"></a>
-<a href="https://hub.docker.com/r/rdavidoff/twitch-channel-points-miner-v2"><img alt="Docker Pulls" src="https://img.shields.io/docker/pulls/rdavidoff/twitch-channel-points-miner-v2?style=flat&color=blue&logo=docker&logoColor=white&label=pulls"></a>
-<a href="https://hub.docker.com/r/rdavidoff/twitch-channel-points-miner-v2"><img alt="Docker Images Size AMD64" src="https://img.shields.io/docker/image-size/rdavidoff/twitch-channel-points-miner-v2/latest?arch=amd64&label=AMD64 image size&style=flat&color=purple&logo=amd&logoColor=white"></a>
-<a href="https://hub.docker.com/r/rdavidoff/twitch-channel-points-miner-v2"><img alt="Docker Images Size ARM64" src="https://img.shields.io/docker/image-size/rdavidoff/twitch-channel-points-miner-v2/latest?arch=arm64&label=ARM64 image size&style=flat&color=black&logo=arm&logoColor=white"></a>
-<a href="https://hub.docker.com/r/rdavidoff/twitch-channel-points-miner-v2"><img alt="Docker Images Size ARMv7" src="https://img.shields.io/docker/image-size/rdavidoff/twitch-channel-points-miner-v2/latest?arch=arm&label=ARMv7 image size&style=flat&color=lightyellow&logo=arm&logoColor=white"></a>
-</p>
+---
 
+## 🌌 Premium Dashboard (Cyber-Blackout & Neon Purple)
+- 👾 **Cyber-Premium Design:** Deep dark colors (Blackout) with vibrant accents and glows in Neon Purple (`#a855f7`) and Cyan (`#00f0ff`).
+- ⚡ **Automatic Cache Busting:** Dynamic system in the Flask server that updates CSS/JS file URLs based on their modification date. **Say goodbye to manual cache clearing!**
+- 📱 **100% Responsive:** Smooth 3D mobile sidebar (GPU-accelerated), auto-stacking streamer tables for phones, and comfortable hit targets of at least 44px.
+- 🖥️ **VPS Compact Mode:** Interactive toggle button that shrinks margins, paddings, and font sizes—ideal for low-resolution remote connections (RDP/VNC).
+- 🧠 **RAM Efficiency (Visibility API):** The dashboard detects if the tab is in the background and automatically throttles AJAX polling, saving CPU and bandwidth on your VPS.
+- 🔠 **Tabular-width Numbers (Fira Code):** Stat numbers rendered in monospaced format, eliminating annoying visual shifts during real-time updates.
 
-<p align="center">
-<img src="./assets/banner.png" alt="Twitch Channel Points Miner V3 Banner">
-</p>
-
-<h1 align="center">Twitch Channel Points Miner V3</h1>
+---
 
 **Credits**
 - Main idea: https://github.com/gottagofaster236/Twitch-Channel-Points-Miner
@@ -37,47 +26,35 @@
 Read more about the channel points [here](https://help.twitch.tv/s/article/channel-points-guide).
 
 # README Contents
-1. 🤝 [Community](#community)
-2. 🚀 [Main differences from the original repository](#main-differences-from-the-original-repository)
-3. 🧾 [Logs feature](#logs-feature)
+1. 🚀 [Main differences from the original repository](#main-differences-from-the-original-repository)
+2. 🧾 [Logs feature](#logs-feature)
     - [Full logs](#full-logs)
     - [Less logs](#less-logs)
     - [Final report](#final-report)
-4. 🧐 [How to use](#how-to-use)
+3. 🧐 [How to use](#how-to-use)
     - [Cloning](#by-cloning-the-repository)
     - [Docker](#docker)
     	- [Docker Hub](#docker-hub)
 		- [Portainer](#portainer)
     - [Replit](#replit)
     - [Limits](#limits)
-5. 🔧 [Settings](#settings)
+4. 🔧 [Settings](#settings)
     - [LoggerSettings](#loggersettings)
     - [StreamerSettings](#streamersettings)
     - [BetSettings](#betsettings)
         - [Bet strategy](#bet-strategy)
     - [FilterCondition](#filtercondition)
         - [Example](#example)
-6. 📈 [Analytics](#analytics)
-7. 📱 [Mobile App (PWA) - Nebula Miner](#mobile-app-pwa---nebula-miner)
-8. 🍪 [Migrating from an old repository (the original one)](#migrating-from-an-old-repository-the-original-one)
-9. 🪟 [Windows](#windows)
+5. 📈 [Analytics](#analytics)
+6. 📱 [Mobile App (PWA) - Nebula Miner](#mobile-app-pwa---nebula-miner)
+7. 🍪 [Migrating from an old repository (the original one)](#migrating-from-an-old-repository-the-original-one)
+8. 🪟 [Windows](#windows)
+9. 🌐 [VPS & Caddy Deploy](#vps--caddy-deploy-windows-10-vps)
 10. 📱 [Termux](#termux)
 11. ⚠️ [Disclaimer](#disclaimer)
 
 
-## Community
-If you want to help with this project, please leave a star 🌟 and share it with your friends! 😎
-
-If you want to offer me a coffee, I would be grateful! ❤️
-
-|                                                                                                                                                                                                                                                                                                           |                                               |
-|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-----------------------------------------------|
-|<a href="https://bitcoin.org" target="_blank"><img src="https://dynamic-assets.coinbase.com/e785e0181f1a23a30d9476038d9be91e9f6c63959b538eabbc51a1abc8898940383291eede695c3b8dfaa1829a9b57f5a2d0a16b0523580346c6b8fab67af14b/asset_icons/b57ac673f06a4b0338a596817eb0a50ce16e2059f327dc117744449a47915cb2.png" alt="Donate BTC" height="16" width="16"></a>|`bc1qq49mvgda2zw4f9kta0a85xztwuxewqwac5eckd` _(<a href="https://bitcoin.org" target="_blank">BTC</a>)_|
-|<a href="https://dogechain.info" target="_blank"><img src="https://dynamic-assets.coinbase.com/3803f30367bb3972e192cd3fdd2230cd37e6d468eab12575a859229b20f12ff9c994d2c86ccd7bf9bc258e9bd5e46c5254283182f70caf4bd02cc4f8e3890d82/asset_icons/1597d628dd19b7885433a2ac2d7de6ad196c519aeab4bfe679706aacbf1df78a.png" alt="Donate DOGE" height="16" width="16"></a>|`DAKzncwKkpfPCm1xVU7u2pConpXwX7HS3D` _(<a href="https://dogechain.info" target="_blank">DOGE</a>)_|
-|<a href="https://www.donationalerts.com/r/rdavydov" target="_blank"><img src="https://www.donationalerts.com/static/donations/dist/favicon.ico" alt="Donate via DonationAlerts" height="16" width="16"></a>|https://www.donationalerts.com/r/rdavydov|
-|<a href="https://boosty.to/rdavydov/donate" target="_blank"><img src="https://static.boosty.to/static/favicon.png?v=11" alt="Donate via Boosty" height="16" width="16"></a>|https://boosty.to/rdavydov/donate|
-
-If you have any issues or you want to contribute, you are welcome! But please read the [CONTRIBUTING.md](https://github.com/andyoliveiraa/Twitch_pontos_Farmer/blob/master/CONTRIBUTING.md) file.
+If you have any issues, feel free to open a ticket!
 
 ## Main differences from the original repository:
 
@@ -697,21 +674,21 @@ For more information on the Analytics server, read the [`TwitchChannelPointsMine
 
 ## Mobile App (PWA) - Nebula Miner
 
-O **Nebula Miner** agora possui suporte nativo a dispositivos móveis através de PWA (Progressive Web App). Isto significa que você pode instalar a Dashboard diretamente no seu telemóvel/celular e usá-la como uma aplicação nativa!
+**Nebula Miner** now has native mobile support via PWA (Progressive Web App). This means you can install the Dashboard directly on your smartphone and use it like a native application!
 
-**Como instalar:**
-1. Inicie o Minerador garantindo que a opção `host="0.0.0.0"` está configurada no `AnalyticsServer`, ou acesse via domínio caso esteja hospedado na nuvem (ex: `https://pontos.discloud.app/`).
-2. Abra o navegador no seu telemóvel (Chrome no Android, Safari no iOS) e acesse o endereço do servidor.
-3. Nas opções do navegador, escolha **"Adicionar à Tela Inicial"** ou **"Instalar Aplicativo"**.
-4. Um ícone do Nebula Miner será adicionado à sua tela inicial.
+**How to install:**
+1. Start the miner ensuring the `host="0.0.0.0"` option is configured in `AnalyticsServer`, or access it via domain if hosted in the cloud (e.g., `https://pontos.discloud.app/`).
+2. Open the browser on your mobile phone (Chrome on Android, Safari on iOS) and access the server address.
+3. In the browser options, choose **"Add to Home Screen"** or **"Install App"**.
+4. A Nebula Miner icon will be added to your home screen.
 
-O aplicativo móvel suporta a estética escura premium, um menu lateral deslizante (hamburger menu) para os streamers, barras de progresso, e roda em tela cheia (full-screen) sem as bordas do navegador.
+The mobile app supports the dark premium aesthetic, a slide-out hamburger sidebar for streamers, progress bars, and runs in full-screen without browser frames.
 
-### Gerar APK para Android
-Se preferir distribuir um ficheiro `.apk` nativo:
-1. Acesse serviços web gratuitos como [PWABuilder](https://www.pwabuilder.com/) ou [WebIntoApp](https://www.webintoapp.com/).
-2. Insira a URL da sua dashboard hospedada na nuvem (ex: `https://pontos.discloud.app/`).
-3. O serviço reconhecerá automaticamente os ficheiros `manifest.json` e `sw.js` embutidos no Nebula Miner e compilará um `.apk` pronto para download e distribuição.
+### Generate APK for Android
+If you prefer to distribute a native `.apk` file:
+1. Access free web services such as [PWABuilder](https://www.pwabuilder.com/) or [WebIntoApp](https://www.webintoapp.com/).
+2. Enter the URL of your cloud-hosted dashboard (e.g., `https://pontos.discloud.app/`).
+3. The service will automatically recognize the `manifest.json` and `sw.js` files embedded in Nebula Miner and compile an `.apk` ready for download and distribution.
 
 ## Migrating from an old repository (the original one):
 If you already have a `twitch-cookies.pkl` and you don't want to log in again, please create a `cookies/` folder in the current directory and then copy the .pkl file with a new name `your-twitch-username.pkl`
@@ -732,6 +709,38 @@ Other useful info can be found here:
 - https://github.com/Tkd-Alex/Twitch-Channel-Points-Miner-v2/issues/55
 
 You can also follow this [video tutorial](https://www.youtube.com/watch?v=0VkM7NOZkuA).
+
+## 🌐 VPS & Caddy Deploy (Windows 10 VPS)
+If you host this bot on a Windows 10 VPS and want to use your own domain (e.g., `pontos.andyo.pt`):
+
+1. **Bot Configuration (`example.py`):**
+   Ensure the bot listens on `127.0.0.1` and the configured port (e.g., `8034`):
+   ```python
+   port = int(os.environ.get("PORT", 8034))
+   twitch_miner.analytics(host="127.0.0.1", port=port, refresh=5, days_ago=7)
+   ```
+
+2. **Caddyfile Configuration:**
+   Edit your `Caddyfile` on the VPS to act as a secure reverse proxy pointing to your domain:
+   ```caddyfile
+   pontos.andyo.pt {
+       reverse_proxy 127.0.0.1:8034
+   }
+   ```
+
+3. **Reload Caddy:**
+   To avoid conflicts with other active websites (such as those running on port `8080`), reload configurations using:
+   ```cmd
+   caddy reload
+   ```
+
+4. **Useful Git Commands to Update the VPS:**
+   To pull new code updates (such as responsive changes and cache-busting):
+   ```cmd
+   cd C:\Path\To\The\Project
+   git reset --hard
+   git pull
+   ```
 
 ## Termux
 **1. Upgrade packages**
