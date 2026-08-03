@@ -215,7 +215,10 @@ class GlobalFormatter(logging.Formatter):
             and skip_telegram is False
             and self.settings.telegram.chat_id != 123456789
         ):
-            self.settings.telegram.send(record.msg, record.event)
+            try:
+                self.settings.telegram.send(record.msg, record.event)
+            except Exception:
+                pass
 
     def discord(self, record):
         skip_discord = False if hasattr(
@@ -227,7 +230,10 @@ class GlobalFormatter(logging.Formatter):
             and self.settings.discord.webhook_api
             != "https://discord.com/api/webhooks/0123456789/0a1B2c3D4e5F6g7H8i9J"
         ):
-            self.settings.discord.send(record.msg, record.event)
+            try:
+                self.settings.discord.send(record.msg, record.event)
+            except Exception:
+                pass
 
     def webhook(self, record):
         skip_webhook = False if hasattr(
@@ -236,10 +242,13 @@ class GlobalFormatter(logging.Formatter):
         if (
             self.settings.webhook is not None
             and skip_webhook is False
-            and self.settings.webhook.endpoint
-            != "https://example.com/webhook"
+            and self.settings.webhook.endpoint not in ["https://example.com/webhook", "your_webhook_endpoint"]
+            and self.settings.webhook.endpoint.startswith(("http://", "https://"))
         ):
-            self.settings.webhook.send(record.msg, record.event)
+            try:
+                self.settings.webhook.send(record.msg, record.event)
+            except Exception:
+                pass
 
     def matrix(self, record):
         skip_matrix = False if hasattr(
@@ -251,7 +260,10 @@ class GlobalFormatter(logging.Formatter):
             and self.settings.matrix.room_id != "..."
             and self.settings.matrix.access_token
         ):
-            self.settings.matrix.send(record.msg, record.event)
+            try:
+                self.settings.matrix.send(record.msg, record.event)
+            except Exception:
+                pass
 
     def pushover(self, record):
         skip_pushover = False if hasattr(
@@ -263,7 +275,10 @@ class GlobalFormatter(logging.Formatter):
             and self.settings.pushover.userkey != "YOUR-ACCOUNT-TOKEN"
             and self.settings.pushover.token != "YOUR-APPLICATION-TOKEN"
         ):
-            self.settings.pushover.send(record.msg, record.event)
+            try:
+                self.settings.pushover.send(record.msg, record.event)
+            except Exception:
+                pass
 
     def gotify(self, record):
         skip_gotify = False if hasattr(
@@ -275,7 +290,10 @@ class GlobalFormatter(logging.Formatter):
             and self.settings.gotify.endpoint
             != "https://example.com/message?token=TOKEN"
         ):
-            self.settings.gotify.send(record.msg, record.event)
+            try:
+                self.settings.gotify.send(record.msg, record.event)
+            except Exception:
+                pass
 
 
 def configure_loggers(username, settings):

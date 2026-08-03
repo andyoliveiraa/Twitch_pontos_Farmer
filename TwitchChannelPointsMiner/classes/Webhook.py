@@ -14,13 +14,15 @@ class Webhook(object):
         self.events = [str(e) for e in events]
 
     def send(self, message: str, event: Events) -> None:
-        
         if str(event) in self.events:
-            url = self.endpoint + f"?event_name={str(event)}&message={message}" 
-            
-            if self.method.lower() == "get":
-                requests.get(url=url)
-            elif self.method.lower() == "post":
-                requests.post(url=url)
-            else:
-                raise ValueError("Invalid method, use POST or GET")
+            if not self.endpoint or not self.endpoint.startswith(("http://", "https://")):
+                return
+
+            url = self.endpoint + f"?event_name={str(event)}&message={message}"
+            try:
+                if self.method.lower() == "get":
+                    requests.get(url=url, timeout=10)
+                elif self.method.lower() == "post":
+                    requests.post(url=url, timeout=10)
+            except Exception:
+                pass
