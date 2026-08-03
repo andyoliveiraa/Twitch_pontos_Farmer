@@ -166,29 +166,30 @@ class GlobalFormatter(logging.Formatter):
         return dt.strftime(datefmt or self.default_time_format)
 
     def format(self, record):
-        record.emoji_is_present = (
-            record.emoji_is_present if hasattr(
-                record, "emoji_is_present") else False
-        )
+        record.emoji_is_present = getattr(record, "emoji_is_present", False)
+
+        msg_str = str(record.msg)
+
         if (
             hasattr(record, "emoji")
             and self.settings.emoji is True
             and record.emoji_is_present is False
         ):
-            record.msg = emoji.emojize(
-                f"{record.emoji}  {record.msg.strip()}", language="alias"
+            msg_str = emoji.emojize(
+                f"{record.emoji}  {msg_str.strip()}", language="alias"
             )
             record.emoji_is_present = True
 
         if self.settings.emoji is False:
-            if "\u2192" in record.msg:
-                record.msg = record.msg.replace("\u2192", "-->")
+            if "\u2192" in msg_str:
+                msg_str = msg_str.replace("\u2192", "-->")
 
             # With the update of Stream class, the Stream Title may contain emoji
             # Full remove using a method from utils.
-            record.msg = remove_emoji(record.msg)
+            msg_str = remove_emoji(msg_str)
 
-        record.msg = self.settings.username + record.msg
+        username_prefix = self.settings.username or ""
+        record.msg = username_prefix + msg_str
 
         if hasattr(record, "event"):
             self.telegram(record)
