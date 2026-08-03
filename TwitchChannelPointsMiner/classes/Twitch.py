@@ -160,23 +160,27 @@ class Twitch(object):
         json_data = copy.deepcopy(GQLOperations.WithIsStreamLiveQuery)
         json_data["variables"] = {"id": streamer.channel_id}
         response = self.post_gql_request(json_data)
-        if response != {}:
+        try:
             stream = response["data"]["user"]["stream"]
             if stream is not None:
                 return stream["id"]
             else:
                 raise StreamerIsOfflineException
+        except (KeyError, TypeError):
+            raise StreamerIsOfflineException
 
     def get_stream_info(self, streamer):
         json_data = copy.deepcopy(
             GQLOperations.VideoPlayerStreamInfoOverlayChannel)
         json_data["variables"] = {"channel": streamer.username}
         response = self.post_gql_request(json_data)
-        if response != {}:
+        try:
             if response["data"]["user"]["stream"] is None:
                 raise StreamerIsOfflineException
             else:
                 return response["data"]["user"]
+        except (KeyError, TypeError):
+            raise StreamerIsOfflineException
 
     def check_streamer_online(self, streamer):
         if time.time() < streamer.offline_at + 60:
@@ -672,29 +676,37 @@ class Twitch(object):
         json_data["variables"] = {"channelLogin": streamer.username}
 
         response = self.post_gql_request(json_data)
-        if response != {}:
-            if response["data"]["community"] is None:
+        if response and "data" in response and response["data"] is not None:
+            if response["data"].get("community") is None:
                 raise StreamerDoesNotExistException
-            channel = response["data"]["community"]["channel"]
-            community_points = channel["self"]["communityPoints"]
-            streamer.channel_points = community_points["balance"]
-            streamer.activeMultipliers = community_points["activeMultipliers"]
+            try:
+                channel = response["data"]["community"]["channel"]
+                if channel is None or "self" not in channel or channel["self"] is None:
+                    return
+                community_points = channel["self"]["communityPoints"]
+                streamer.channel_points = community_points["balance"]
+                streamer.activeMultipliers = community_points["activeMultipliers"]
 
-            if streamer.settings.community_goals is True:
-                streamer.community_goals = {
-                    goal["id"]: CommunityGoal.from_gql(goal)
-                    for goal in channel["communityPointsSettings"]["goals"]
-                }
+                if streamer.settings.community_goals is True:
+                    streamer.community_goals = {
+                        goal["id"]: CommunityGoal.from_gql(goal)
+                        for goal in channel.get("communityPointsSettings", {}).get("goals", [])
+                    }
 
-            if community_points["availableClaim"] is not None:
-                self.claim_bonus(
-                    streamer, community_points["availableClaim"]["id"])
+                if community_points.get("availableClaim") is not None:
+                    self.claim_bonus(
+                        streamer, community_points["availableClaim"]["id"])
 
-            if streamer.settings.community_goals is True:
-                self.contribute_to_community_goals(streamer)
-
-            if streamer.settings.community_goals is True:
-                self.contribute_to_community_goals(streamer)
+                if streamer.settings.community_goals is True:
+                    self.contribute_to_community_goals(streamer)
+            except (KeyError, TypeError) as e:
+                logger.error(
+                    f"Error parsing channel points context for {streamer.username}: {e}"
+                )
+        elif response and "errors" in response:
+            logger.warning(
+                f"GQL Error loading channel points context for {streamer.username}: {response['errors']}"
+            )
 
     def make_predictions(self, event):
         decision = event.bet.calculate(event.streamer.channel_points)
